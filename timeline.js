@@ -152,13 +152,20 @@
         addDayToHeader: function addDayToHeader(el, date, className) {
             var div = document.createElement('div'),
                 span = document.createElement('span'),
+                spanmonth = document.createElement('span'),
                 day = document.createTextNode(date.format('ddd')),
-                d = document.createTextNode(date.format('D'));
+                d = document.createTextNode(date.format('D')),
+                month=document.createTextNode(date.format('MMM')),
+                m = date.format('MMM') ;
+                                ;
             div.className = className;
             // First day of month: need darker border
-            if (date.date() === 1) { div.className += ' first'; }
+            if (date.date() === 1) { div.className += ' first'; div.setAttribute('title', m);div.appendChild(spanmonth);spanmonth.className ='month';
+spanmonth.appendChild(month);}
+
             span.className = 'day';
             span.appendChild(day);
+    
             div.appendChild(span);
             div.appendChild(d);
             el.appendChild(div);
