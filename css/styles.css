@@ -152,3 +152,36 @@ tr.expand .bed {
 .centre {
     text-align: center;
 }
+
+/** kv **/
+
+.label-container:last-child:after{ /* divider */
+    content:'';
+    display:block;
+    border:none;
+    color:white;
+    height:1px;
+    background:black;
+    background: -webkit-gradient(radial, 50% 50%, 0, 50% 50%, 350, from(#000), to(#fff));
+    opacity: 0.1;
+}
+
+.label-container:last-child:after:after {
+    content: '>';
+      content:'';
+    display:inline-block;
+}
+
+/* month marker */
+.date.first {position: relative;}
+
+.date.first .month {
+    border-bottom: 1px solid #298e75;
+    color: #fff;
+    font-size: 0.8em;
+    left: -1.3em;
+    line-height: 0.8em;
+    padding: 0.2em;
+    position: absolute;
+    top: -1.6em;
+}
