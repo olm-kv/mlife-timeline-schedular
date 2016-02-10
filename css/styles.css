@@ -155,7 +155,7 @@ tr.expand .bed {
 
 /** kv **/
 
-.label-container:last-child:after{ /* divider */
+.label-container:last-child:after ,.green.timeline-nav:after{ /* divider */
     content:'';
     display:block;
     border:none;
@@ -166,11 +166,7 @@ tr.expand .bed {
     opacity: 0.1;
 }
 
-.label-container:last-child:after:after {
-    content: '>';
-      content:'';
-    display:inline-block;
-}
+
 
 /* month marker */
 .date.first {position: relative;}
