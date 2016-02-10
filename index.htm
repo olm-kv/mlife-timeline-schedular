@@ -168,6 +168,9 @@
                 onClickView: viewBooking,
                 onClickBed: newBooking
             });
+            $(window).resize(function(){
+                update();
+            });
         });
         
         // Update data in timeline -- Test harness
