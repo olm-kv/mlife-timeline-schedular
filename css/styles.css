@@ -172,7 +172,6 @@ tr.expand .bed {
 .date.first {position: relative;}
 
 .date.first .month {
-    border-bottom: 1px solid #298e75;
     color: #fff;
     font-size: 0.8em;
     left: -1.3em;
