@@ -15,13 +15,13 @@
         $table: document.getElementById('timeline-table'),                          // Table element
         $tableHead: document.getElementById('timeline-header'),                     // Table head element
         $header: document.getElementsByClassName('row-timeline-heading')[0],        // Heading element
-        onClickView: function (e) { console.log('booking', e); },                   // Click handler for viewing an event
-        onClickBed: function (e) {                                                  // Click handler for empty bed event
+        onClickBooking: function (e) { console.log('booking', e); },                // Click handler for a booking
+        onClickVacancy: function (e) {                                              // Click handler for empty day
             e.stopPropagation();
             var col = parseInt(e.offsetX / 30, 10);
             console.log(col);
         },
-        onHoverBed: function (e) {
+        onHoverVacancy: function (e) {
             var klass,
                 target = e.target;
             if (target.className.indexOf('bed') > -1) {
@@ -30,7 +30,7 @@
                 document.getElementById(target.id).className = klass;
             }
         },
-        onOutBed: function(e) {
+        onOutVacancy: function(e) {
             var klass,
                 target = e.target;
             if (target.className.indexOf('bed') > -1) {
@@ -238,7 +238,7 @@
             bed.appendChild(bedName);
                         
             // Add bed container hover and click handlers (available day)
-            //bed.addEventListener('click', this.onClickBed);
+            //bed.addEventListener('click', this.onClickVacancy);
             return bed;
         },
         
@@ -249,9 +249,9 @@
             bed.className = 'bed';
                         
             // Add bed container hover and click handlers (available day)
-            bed.addEventListener('mouseover', this.onHoverBed);
-            bed.addEventListener('mouseout', this.onOutBed);
-            bed.addEventListener('click', this.onClickBed);
+            bed.addEventListener('mouseover', this.onHoverVacancy);
+            bed.addEventListener('mouseout', this.onOutVacancy);
+            bed.addEventListener('click', this.onClickVacancy);
             return bed;
         },
         
@@ -278,7 +278,7 @@
                 if (start !== undefined) { div.dataset['start'] = start; }
                 if (client !== undefined) { div.dataset['client'] = client; }
                 if (duration !== undefined) { div.dataset['duration'] = duration; }
-                div.addEventListener('click', this.onClickView);
+                div.addEventListener('click', this.onClickBooking);
 
                 div.appendChild(content);
                 el.appendChild(div);
