@@ -19,10 +19,10 @@ td.row-timeline {
     background-image: url(../images/timeline.gif); 
 }
 td.row-heading {
-    width: 20%;
+    width: 238px;
 }
 th.row-timeline-heading, td.row-timeline {
-    width: 80%;
+    width: 902px;
 }
 .top-margin-60 {
     margin-top: 60px;
@@ -151,6 +151,7 @@ tr.expand .bed {
 }
 .centre {
     text-align: center;
+
 }
 
 /** kv **/
@@ -179,4 +180,41 @@ tr.expand .bed {
     padding: 0.2em;
     position: absolute;
     top: -1.6em;
+}
+
+/* Timeline widget */
+
+
+.timeline-nav .wrapper h2 {
+    position: absolute;
+    display: inline-block;
+    padding: 0px;
+    margin: 0px;
+    left: 0;
+right: 0;
+margin: 1em auto;
+
+}
+
+.timeline-nav .wrapper {
+    position: relative;
+}
+
+
+.timeline-nav .btn-back{
+    float:left;
+    position: relative;
+     z-index: 500;
+
+}
+
+.timeline-nav .btn-advance {
+   float:right; 
+   position: relative;
+   z-index: 500;
+}
+
+.timeline-nav .btn-advance,.timeline-nav .btn-back {
+    margin: 2em 0;
+
 }
