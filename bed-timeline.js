@@ -4,6 +4,7 @@
         bookingData: {},                                                            // Would come from ajax
         colWidth: 30,                                                               // Width of each col in px
         width: 0,                                                                   // Width of timeline col in px
+        numberOfDays: 0,                                                            // Number of days in timeline
         dayClassName: 'date',                                                       // Class name for days divs
         rowHeadClassName: 'home',                                                   // Class name for row heading
         startDate: '',                                                              // Start date for timeline
@@ -31,7 +32,7 @@
                 document.getElementById(target.id).className = klass;
             }
         },
-        onOutVacancy: function(e) {
+        onOutVacancy: function (e) {
             var klass,
                 target = e.target;
             if (target.className.indexOf('bed') > -1) {
@@ -76,7 +77,7 @@
                 this[key] = options[key];
             }
         },
-        
+
         advance: function advance(days) {
             var next;
             if (days === undefined) {
@@ -90,16 +91,16 @@
             }
             this.init();
         },
-        
+
         back: function back(days) {
             var last;
             if (days === undefined) {
                 // Go to first monday in last month
-                last = this.startDate.startOf('month').subtract(1, 'month');                
+                last = this.startDate.startOf('month').subtract(1, 'month');
                 while (last.day() !== 1) { last.add(1, 'day'); }
                 // Don't go earlier than today
                 this.startDate = (last < moment().hour(0).minute(0).second(0)) ?
-                    moment().hour(0).minute(0).second(0) : 
+                    moment().hour(0).minute(0).second(0) :
                     last;
                 this.init();
             } else {
@@ -121,7 +122,6 @@
                 th2 = document.createElement('th'),
                 div = document.createElement('div'),
                 content = document.createTextNode('Bed'),
-                numberOfDays,
                 d;
 
             th1.className = 'row-heading ' + this.theme;
@@ -135,10 +135,10 @@
             
             // Setup header 
             this.width = th2.offsetWidth;
-            numberOfDays = parseInt(this.width / this.colWidth, 10);
+            this.numberOfDays = parseInt(this.width / this.colWidth, 10);
             
             // Draw days into header
-            for (d = 0; d < numberOfDays; d++) {
+            for (d = 0; d < this.numberOfDays; d++) {
                 this.addDayToHeader(th2, date, this.dayClassName);
                 date.add(1, 'days');
             }
@@ -183,7 +183,7 @@
                         booking.start,
                         booking.duration,
                         booking.client
-                        )
+                    )
                 });
                 $row.children[1].children[0].appendChild($bed);
                 
@@ -241,7 +241,7 @@
                 offset = this.positionFromDate(start), /* Number of days from start */
                 left = ((offset * 30) < 0) ? 0 : offset * 30,
                 right = ((left + (duration * 30)) > this.width) ? this.width - 1 : (left + (duration * 30) - 1);
-
+                
             // Only draw booking if it falls in current timeline range
             if ((date < this.endDate) && (date.add(duration, 'days') > this.startDate)) {
                 // Styles
@@ -285,6 +285,10 @@
                     el.removeChild(el.childNodes[0]);
                 }
             }
+        },
+
+        debug: function (text) {
+            document.getElementById('debug').innerText += text + '\n';
         }
 
     };

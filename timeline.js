@@ -346,6 +346,10 @@
                     el.removeChild(el.childNodes[0]);
                 }
             }
+        },
+
+        debug: function (text) {
+            document.getElementById('debug').innerText += text + '\n';
         }
 
     };
