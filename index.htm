@@ -162,14 +162,22 @@
         // Present the bed data for debug
         $(document).ready(function() {
             var data = JSON.stringify(bedData, null, 4);
+            var resizeTimer;
             $('#code').text(data);
             Timeline.init(bedData, {
                 theme: 'green',
                 onClickView: viewBooking,
                 onClickBed: newBooking
             });
-            $(window).resize(function(){
+            // Reddraw timeline after resize
+            $(window).on('resize', function(e) {
+
+              clearTimeout(resizeTimer);
+              resizeTimer = setTimeout(function() {
                 update();
+                        
+              }, 250);
+
             });
         });
         
