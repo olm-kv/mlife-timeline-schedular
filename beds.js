@@ -39,7 +39,15 @@ var bedData = {
                 {
                     id: 'b003',
                     name: 'bed3',
-                    bookings: []
+                    bookings: [
+                        {
+                            ref: 'b05',
+                            status: 'requested',
+                            client: 'Sarah Payne',
+                            start: '26/02/2016',
+                            duration: 7
+                        }
+                    ]
                 }
             ]
             

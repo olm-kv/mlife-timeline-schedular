@@ -6,6 +6,7 @@
         width: 0,                                                                   // Width of timeline col in px
         dayClassName: 'date',                                                       // Class name for days divs
         rowHeadClassName: 'home',                                                   // Class name for row heading
+        numberOfDays: 0,                                                            // Number of days in timeline
         startDate: '',                                                              // Start date for timeline
         endDate: '',                                                                // Computed end date for timeline
         data: {},                                                                   // Store initial bed data
@@ -110,7 +111,7 @@
         // Calculate how many days dateString occurs from start date of timeline
         positionFromDate: function positionFromDate(dateString) {
             var date = moment(dateString, 'DD/MM/YYYY');
-            return moment.duration(date.diff(this.startDate)).asDays();
+            return Math.round(moment.duration(date.diff(this.startDate)).asDays(), 0);
         },
         
         // Draw the header element
@@ -120,7 +121,6 @@
                 th2 = document.createElement('th'),
                 div = document.createElement('div'),
                 content = document.createTextNode('Care Home'),
-                numberOfDays,
                 d;
 
             th1.className = 'row-heading ' + this.theme;
@@ -137,10 +137,10 @@
             
             // Setup header 
             this.width = th2.offsetWidth;
-            numberOfDays = parseInt(this.width / this.colWidth, 10);
+            this.numberOfDays = parseInt(this.width / this.colWidth, 10);
             
             // Draw days into header
-            for (d = 0; d < numberOfDays; d++) {
+            for (d = 0; d < this.numberOfDays; d++) {
                 this.addDayToHeader(th2, date, this.dayClassName);
                 date.add(1, 'days');
             }
@@ -170,11 +170,27 @@
             var timeline = this,
                 $row,
                 $bed,
-                $bedLabel;
+                $bedLabel,
+                $vacancies,
+                vacancies = [],
+                i;
 
             data.homes.forEach(function (home) {
                 // Create new row
                 $row = timeline.drawRow(home.name);
+                
+                // Initialise vacancies data for the home
+                vacancies = [];
+                for (i = 0; i < timeline.numberOfDays; i++) { vacancies.push(home.beds.length); };
+                
+                function updateVacancies(start, duration) {
+                    var date = moment(start, 'DD/MM/YYYY'),
+                        offset = timeline.positionFromDate(start);
+                    if ((date < timeline.endDate) && (date.add(duration, 'days') > timeline.startDate)) {
+                        i = (offset < 0) ? 0 : offset;
+                        while ((i < vacancies.length) && (i < (offset + duration))) { vacancies[i++] -= 1; };
+                    }    
+                };
                 
                 // Add beds
                 home.beds.forEach(function (bed) {
@@ -182,7 +198,7 @@
                     $bed = timeline.drawBed(bed.id, bed.name);
                     
                     // Create each booking rectangle in row
-                    bed.bookings.forEach(function (booking) {
+                    var b = bed.bookings.forEach(function (booking) {
                         timeline.drawBooking(
                             $bed,
                             booking.ref,
@@ -190,11 +206,16 @@
                             booking.start,
                             booking.duration,
                             booking.client
-                            )
+                        );
+                        updateVacancies(booking.start, booking.duration);
                     });
-                    $row.children[0].children[1].appendChild($bedLabel);
-                    $row.children[1].children[0].appendChild($bed);
+                    // Add elements to row in DOM
+                    $row.children[0].children[1].appendChild($bedLabel);    // Bed name
+                    $row.children[1].children[0].appendChild($bed);         // Bookings (expanded view)
                 });
+                // Aggregated vacancies (contracted view)
+                $vacancies = timeline.drawVacancies(vacancies);
+                $row.children[1].children[0].appendChild($vacancies);   
                 
                 // Append rows to timeline table
                 timeline.$table.appendChild($row);
@@ -238,7 +259,6 @@
             bed.appendChild(bedName);
                         
             // Add bed container hover and click handlers (available day)
-            //bed.addEventListener('click', this.onClickVacancy);
             return bed;
         },
         
@@ -261,8 +281,8 @@
                 content = document.createTextNode((client !== undefined) ? client : ''),
                 date = moment(start, 'DD/MM/YYYY'),
                 offset = this.positionFromDate(start), /* Number of days from start */
-                left = ((offset * 30) < 0) ? 0 : offset * 30,
-                right = ((left + (duration * 30)) > this.width) ? this.width - 1 : (left + (duration * 30) - 1);
+                left = ((offset * 30) < 0) ? 0 : (offset * 30),
+                right = (((offset + duration * 30)) > this.width) ? this.width - 1 : ((offset + duration) * 30) - 1;
 
             // Only draw booking if it falls in current timeline range
             if ((date < this.endDate) && (date.add(duration, 'days') > this.startDate)) {
@@ -283,6 +303,22 @@
                 div.appendChild(content);
                 el.appendChild(div);
             }
+        },
+        
+        drawVacancies: function drawVacancies(vacancies) {
+            var div = document.createElement('div'),
+                v,
+                beds,
+                i = 0;
+            
+            while (i < vacancies.length) {
+                v = document.createElement('div');
+                v.className = 'vacancy' + (vacancies[i] === 0 ? ' vacancy-none' : '');
+                beds = document.createTextNode(vacancies[i++]);
+                v.appendChild(beds);
+                div.appendChild(v);
+            }
+            return div;
         },
         
         // When clicking a row heading, expand or collapse bookings in row

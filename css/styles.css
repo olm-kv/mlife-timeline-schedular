@@ -83,6 +83,7 @@ tr.expand th .home:after {
 }
 
 .bed {
+    display: none;
     position: absolute;
     min-height: 36px;
     padding: 0;
@@ -101,6 +102,7 @@ tr.expand .bed-label {
 
 tr.expand .bed {
     position: relative;
+    display: block;
     margin-bottom: 1px;
 }
 
@@ -151,4 +153,19 @@ tr.expand .bed {
 }
 .centre {
     text-align: center;
+}
+
+.vacancy {
+    display: inline-block;
+    width: 30px;
+    text-align: center;
+    min-height: 36px;
+    padding: 8px;
+}
+.vacancy-none {
+    background-color: #434A54;
+    color: white;
+}
+tr.expand .vacancy {
+    display: none;
 }
