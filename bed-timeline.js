@@ -1,5 +1,5 @@
 (function () {
-    var Timeline = {
+    var BedManager = {
 
         bookingData: {},                                                            // Would come from ajax
         colWidth: 30,                                                               // Width of each col in px
@@ -289,6 +289,6 @@
 
     };
 
-    window.Timeline = Timeline;
+    window.BedManager = BedManager;
 
 })();
