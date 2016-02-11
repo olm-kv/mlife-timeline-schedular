@@ -184,15 +184,17 @@ tr.expand .bed {
 
 /* Timeline widget */
 
+.timeline>table {font-size: 0.7em;}
 
 .timeline-nav .wrapper h2 {
     position: absolute;
     display: inline-block;
-    padding: 0px;
-    margin: 0px;
+    padding:  0 2em;
+    margin:0;
     left: 0;
-right: 0;
-margin: 1em auto;
+    right: 0;
+    margin: 1.2em auto;
+    font-size: 1.4em;
 
 }
 
@@ -205,6 +207,7 @@ margin: 1em auto;
     float:left;
     position: relative;
      z-index: 500;
+     line-height: 0.5em;
 
 }
 
@@ -212,9 +215,36 @@ margin: 1em auto;
    float:right; 
    position: relative;
    z-index: 500;
+   line-height: 0.5em;
 }
 
 .timeline-nav .btn-advance,.timeline-nav .btn-back {
     margin: 2em 0;
+
+}
+
+
+@media only screen and (min-device-width: 320px) {
+/* Styles */
+}
+
+@media only screen and (min-width: 750px) {
+/* Styles */
+
+    .timeline-nav .wrapper h2 {
+        position: absolute;
+        display: inline-block;
+        padding: 0px;
+        margin: 0px;
+        left: 0;
+        right: 0;
+        margin: 1em auto;
+        font-size: 30px;
+
+    }
+
+    .timeline-nav .btn-advance, .timeline-nav .btn-advance {line-height: 1.4em; }
+.timeline>table {font-size: 1em;}
+  
 
 }
