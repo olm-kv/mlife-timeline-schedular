@@ -156,6 +156,21 @@ tr.expand .bed {
 
 }
 
+.vacancy {
+    display: inline-block;
+    width: 30px;
+    text-align: center;
+    min-height: 36px;
+    padding: 8px;
+}
+.vacancy-none {
+    background-color: #434A54;
+    color: white;
+}
+tr.expand .vacancy {
+    display: none;
+}
+
 /** kv **/
 
 .label-container:last-child:after ,.green.timeline-nav:after{ /* divider */
