@@ -65,7 +65,7 @@
                     moment().hour(0).minute(0).second(0);
             this.startDate = moment(startDate);
 
-            // Add tiitle text including the start date
+            // Add title text including the start date
             this.$titleText.innerHTML = '';
             newTitle=this.titleText+' '+this.startDate.format('d MMM YYYY');
             content = document.createTextNode(newTitle);
