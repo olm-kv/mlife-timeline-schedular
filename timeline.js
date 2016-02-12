@@ -12,6 +12,7 @@
         data: {},                                                                   // Store initial bed data
         theme: 'default',                                                           // Theme class (default | blue | green)
         showBackButton: false,                                                      // Whether back button can be displayed
+        toggleState: [],                                                            // State of expanded-collapsed headers
         $timeline: document.getElementById('timeline'),                             // Timeline component element
         $table: document.getElementById('timeline-table'),                          // Table element
         $tableHead: document.getElementById('timeline-header'),                     // Table head element
@@ -42,6 +43,7 @@
         },
 
         init: function init(data, options) {
+            var i;
             if (options !== undefined) { this.setOptions(options); }
             
             // Store data
@@ -68,6 +70,14 @@
             // Draw bookings
             this.bookingData = data;
             this.drawBookings(this.bookingData);
+            
+            // Reinstate toggleState
+            for (i = 0; i < this.toggleState.length; i++) {
+                if (this.toggleState[i]) {
+                    var tr = document.querySelectorAll('[data-pos="' + i + '"]');
+                    tr[0].className += ' expand';
+                }
+            }
         },
 
         setOptions: function setOptions(options) {
@@ -173,12 +183,16 @@
                 $bedLabel,
                 $vacancies,
                 vacancies = [],
-                i;
+                i,
+                pos = 0;
 
             data.homes.forEach(function (home) {
                 // Create new row
-                $row = timeline.drawRow(home.name);
+                $row = timeline.drawRow(home.name, pos++);
                 
+                // Set toggled state to false
+                timeline.toggleState.push(false);
+
                 // Initialise vacancies data for the home
                 vacancies = [];
                 for (i = 0; i < timeline.numberOfDays; i++) { vacancies.push(home.beds.length); };
@@ -224,7 +238,7 @@
         
         // Create and return the template structure for a 
         // Care Home row in the timleline table
-        drawRow: function drawRow(name) {
+        drawRow: function drawRow(name, pos) {
             var row = document.createElement('tr'),
                 heading = document.createElement('td'),
                 bookings = document.createElement('td'),
@@ -243,10 +257,11 @@
             heading.appendChild(bedLabelContainer);
             row.appendChild(heading);
             row.appendChild(bookings);
+            row.dataset['pos'] = pos;
             bookings.appendChild(bookingsContainer);
             
             // Add row heading expand and contract handler
-            heading.addEventListener('click', this.toggle);
+            heading.addEventListener('click', this.toggle.bind(this));
             return row;
         },
         
@@ -324,6 +339,7 @@
         // When clicking a row heading, expand or collapse bookings in row
         // The toggle class is "expand" and is applied to the row element
         toggle: function toggle(e) {
+            var pos;
             var target = e.target,
                 owner;
             while (target.tagName !== 'TR') {
@@ -340,6 +356,9 @@
                     if (owner === 'THEAD') { this.expandAll(); }
                 }
             }
+            // Set toggleState
+            pos = parseInt(target.dataset['pos'], 10);
+            this.toggleState[pos] = !this.toggleState[pos];
         },
         
         expandAll: function() {
@@ -350,6 +369,8 @@
                     rows[i].className += ' expand';
                 }
             }
+            // Set toggleState to all expanded
+            for (i = 0; i < this.toggleState.length; i++) { this.toggleState[i] = true; }
         },
         
         contractAll: function() {
@@ -358,6 +379,8 @@
             for (i = 0; i < rows.length; i++) { 
                 rows[i].className = rows[i].className.replace(' expand', '');
             }
+            // Set toggleState to all contracted
+            for (i = 0; i < this.toggleState.length; i++) { this.toggleState[i] = false; }
         },
 
         destroy: function destroy() {
