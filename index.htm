@@ -72,6 +72,11 @@
     </div>
     <!-- End Timeline Grid -->
 
+    <!-- Debug -->
+    <div class="container debug">
+        <pre id="debug"></pre>
+    </div>
+
 
     <!-- View Booking Modal -->
     <div id="view-booking-modal" class="modal fade" role="dialog">
@@ -164,8 +169,8 @@
             $('#code').text(data);
             Timeline.init(bedData, {
                 theme: 'green',
-                onClickView: viewBooking,
-                onClickBed: newBooking
+                onClickBooking: viewBooking,
+                onClickVacancy: newBooking
             });
             // Reddraw timeline after resize
             $(window).on('resize', function(e) {

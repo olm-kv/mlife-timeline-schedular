@@ -1,22 +1,22 @@
 (function () {
-    var Timeline = {
+    var BedManager = {
 
         bookingData: {},                                                            // Would come from ajax
         colWidth: 30,                                                               // Width of each col in px
         width: 0,                                                                   // Width of timeline col in px
+        numberOfDays: 0,                                                            // Number of days in timeline
         dayClassName: 'date',                                                       // Class name for days divs
         rowHeadClassName: 'home',                                                   // Class name for row heading
-        numberOfDays: 0,                                                            // Number of days in timeline
         startDate: '',                                                              // Start date for timeline
         endDate: '',                                                                // Computed end date for timeline
         data: {},                                                                   // Store initial bed data
         theme: 'default',                                                           // Theme class (default | blue | green)
         showBackButton: false,                                                      // Whether back button can be displayed
-        toggleState: [],                                                            // State of expanded-collapsed headers
         $timeline: document.getElementById('timeline'),                             // Timeline component element
         $table: document.getElementById('timeline-table'),                          // Table element
         $tableHead: document.getElementById('timeline-header'),                     // Table head element
         $header: document.getElementsByClassName('row-timeline-heading')[0],        // Heading element
+        onClickBed: function (e) { console.log('bed', e); },                        // Click handler for a bed
         onClickBooking: function (e) { console.log('booking', e); },                // Click handler for a booking
         onClickVacancy: function (e) {                                              // Click handler for empty day
             e.stopPropagation();
@@ -32,7 +32,7 @@
                 document.getElementById(target.id).className = klass;
             }
         },
-        onOutVacancy: function(e) {
+        onOutVacancy: function (e) {
             var klass,
                 target = e.target;
             if (target.className.indexOf('bed') > -1) {
@@ -43,7 +43,6 @@
         },
 
         init: function init(data, options) {
-            var i;
             if (options !== undefined) { this.setOptions(options); }
             
             // Store data
@@ -70,14 +69,6 @@
             // Draw bookings
             this.bookingData = data;
             this.drawBookings(this.bookingData);
-            
-            // Reinstate toggleState
-            for (i = 0; i < this.toggleState.length; i++) {
-                if (this.toggleState[i]) {
-                    var tr = document.querySelectorAll('[data-pos="' + i + '"]');
-                    tr[0].className += ' expand';
-                }
-            }
         },
 
         setOptions: function setOptions(options) {
@@ -86,7 +77,7 @@
                 this[key] = options[key];
             }
         },
-        
+
         advance: function advance(days) {
             var next;
             if (days === undefined) {
@@ -100,16 +91,16 @@
             }
             this.init();
         },
-        
+
         back: function back(days) {
             var last;
             if (days === undefined) {
                 // Go to first monday in last month
-                last = this.startDate.startOf('month').subtract(1, 'month');                
+                last = this.startDate.startOf('month').subtract(1, 'month');
                 while (last.day() !== 1) { last.add(1, 'day'); }
                 // Don't go earlier than today
                 this.startDate = (last < moment().hour(0).minute(0).second(0)) ?
-                    moment().hour(0).minute(0).second(0) : 
+                    moment().hour(0).minute(0).second(0) :
                     last;
                 this.init();
             } else {
@@ -121,7 +112,7 @@
         // Calculate how many days dateString occurs from start date of timeline
         positionFromDate: function positionFromDate(dateString) {
             var date = moment(dateString, 'DD/MM/YYYY');
-            return Math.round(moment.duration(date.diff(this.startDate)).asDays(), 0);
+            return moment.duration(date.diff(this.startDate)).asDays();
         },
         
         // Draw the header element
@@ -130,7 +121,7 @@
                 th1 = document.createElement('th'),
                 th2 = document.createElement('th'),
                 div = document.createElement('div'),
-                content = document.createTextNode('Care Home'),
+                content = document.createTextNode('Bed'),
                 d;
 
             th1.className = 'row-heading ' + this.theme;
@@ -141,9 +132,6 @@
             row.appendChild(th1);
             row.appendChild(th2);
             this.$tableHead.appendChild(row);
-            
-            // Add row heading expand and contract handler
-            div.addEventListener('click', this.toggle.bind(this));
             
             // Setup header 
             this.width = th2.offsetWidth;
@@ -162,20 +150,13 @@
         addDayToHeader: function addDayToHeader(el, date, className) {
             var div = document.createElement('div'),
                 span = document.createElement('span'),
-                spanmonth = document.createElement('span'),
                 day = document.createTextNode(date.format('ddd')),
-                d = document.createTextNode(date.format('D')),
-                month=document.createTextNode(date.format('MMM')),
-                m = date.format('MMM') ;
-                                ;
+                d = document.createTextNode(date.format('D'));
             div.className = className;
             // First day of month: need darker border
-            if (date.date() === 1) { div.className += ' first'; div.setAttribute('title', m);div.appendChild(spanmonth);spanmonth.className ='month';
-spanmonth.appendChild(month);}
-
+            if (date.date() === 1) { div.className += ' first'; }
             span.className = 'day';
             span.appendChild(day);
-    
             div.appendChild(span);
             div.appendChild(d);
             el.appendChild(div);
@@ -186,57 +167,25 @@ spanmonth.appendChild(month);}
         drawBookings: function drawBookings(data) {
             var timeline = this,
                 $row,
-                $bed,
-                $bedLabel,
-                $vacancies,
-                vacancies = [],
-                i,
-                pos = 0;
+                $bed;
 
-            data.homes.forEach(function (home) {
+            data.homes[0].beds.forEach(function (bed) {
                 // Create new row
-                $row = timeline.drawRow(home.name, pos++);
+                $row = timeline.drawRow(bed.name);
+                $bed = timeline.drawBed(bed.id, bed.name);
                 
-                // Set toggled state to false
-                timeline.toggleState.push(false);
-
-                // Initialise vacancies data for the home
-                vacancies = [];
-                for (i = 0; i < timeline.numberOfDays; i++) { vacancies.push(home.beds.length); };
-                
-                function updateVacancies(start, duration) {
-                    var date = moment(start, 'DD/MM/YYYY'),
-                        offset = timeline.positionFromDate(start);
-                    if ((date < timeline.endDate) && (date.add(duration, 'days') > timeline.startDate)) {
-                        i = (offset < 0) ? 0 : offset;
-                        while ((i < vacancies.length) && (i < (offset + duration))) { vacancies[i++] -= 1; };
-                    }    
-                };
-                
-                // Add beds
-                home.beds.forEach(function (bed) {
-                    $bedLabel = timeline.drawBedLabel(home.name, bed.id, bed.name);
-                    $bed = timeline.drawBed(bed.id, bed.name);
-                    
-                    // Create each booking rectangle in row
-                    var b = bed.bookings.forEach(function (booking) {
-                        timeline.drawBooking(
-                            $bed,
-                            booking.ref,
-                            booking.status,
-                            booking.start,
-                            booking.duration,
-                            booking.client
-                        );
-                        updateVacancies(booking.start, booking.duration);
-                    });
-                    // Add elements to row in DOM
-                    $row.children[0].children[1].appendChild($bedLabel);    // Bed name
-                    $row.children[1].children[0].appendChild($bed);         // Bookings (expanded view)
+                // Create each booking rectangle in row
+                bed.bookings.forEach(function (booking) {
+                    timeline.drawBooking(
+                        $bed,
+                        booking.ref,
+                        booking.status,
+                        booking.start,
+                        booking.duration,
+                        booking.client
+                    )
                 });
-                // Aggregated vacancies (contracted view)
-                $vacancies = timeline.drawVacancies(vacancies);
-                $row.children[1].children[0].appendChild($vacancies);   
+                $row.children[1].children[0].appendChild($bed);
                 
                 // Append rows to timeline table
                 timeline.$table.appendChild($row);
@@ -245,7 +194,7 @@ spanmonth.appendChild(month);}
         
         // Create and return the template structure for a 
         // Care Home row in the timleline table
-        drawRow: function drawRow(name, pos) {
+        drawRow: function drawRow(name) {
             var row = document.createElement('tr'),
                 heading = document.createElement('td'),
                 bookings = document.createElement('td'),
@@ -264,24 +213,11 @@ spanmonth.appendChild(month);}
             heading.appendChild(bedLabelContainer);
             row.appendChild(heading);
             row.appendChild(bookings);
-            row.dataset['pos'] = pos;
             bookings.appendChild(bookingsContainer);
             
             // Add row heading expand and contract handler
-            heading.addEventListener('click', this.toggle.bind(this));
+            heading.addEventListener('click', this.onClickBed);
             return row;
-        },
-        
-        // Add a bed label div element to row heading
-        drawBedLabel: function drawBedLabel(home, id, bedName) {
-            var bed = document.createElement('div'),
-                bedName = document.createTextNode(home + ' - ' + bedName);
-            bed.dataset['id'] = id;
-            bed.className = 'bed-label';
-            bed.appendChild(bedName);
-                        
-            // Add bed container hover and click handlers (available day)
-            return bed;
         },
         
         // Add a bed div element with a click handler
@@ -303,9 +239,9 @@ spanmonth.appendChild(month);}
                 content = document.createTextNode((client !== undefined) ? client : ''),
                 date = moment(start, 'DD/MM/YYYY'),
                 offset = this.positionFromDate(start), /* Number of days from start */
-                left = ((offset * 30) < 0) ? 0 : (offset * 30),
-                right = (((offset + duration * 30)) > this.width) ? this.width - 1 : ((offset + duration) * 30) - 1;
-
+                left = ((offset * 30) < 0) ? 0 : offset * 30,
+                right = ((left + (duration * 30)) > this.width) ? this.width - 1 : (left + (duration * 30) - 1);
+                
             // Only draw booking if it falls in current timeline range
             if ((date < this.endDate) && (date.add(duration, 'days') > this.startDate)) {
                 // Styles
@@ -325,69 +261,6 @@ spanmonth.appendChild(month);}
                 div.appendChild(content);
                 el.appendChild(div);
             }
-        },
-        
-        drawVacancies: function drawVacancies(vacancies) {
-            var div = document.createElement('div'),
-                v,
-                beds,
-                i = 0;
-            
-            while (i < vacancies.length) {
-                v = document.createElement('div');
-                v.className = 'vacancy' + (vacancies[i] === 0 ? ' vacancy-none' : '');
-                beds = document.createTextNode(vacancies[i++]);
-                v.appendChild(beds);
-                div.appendChild(v);
-            }
-            return div;
-        },
-        
-        // When clicking a row heading, expand or collapse bookings in row
-        // The toggle class is "expand" and is applied to the row element
-        toggle: function toggle(e) {
-            var pos;
-            var target = e.target,
-                owner;
-            while (target.tagName !== 'TR') {
-                target = target.parentElement;
-            }
-            
-            if (target !== undefined) {
-                owner = target.parentElement.tagName;
-                if (target.className.indexOf(' expand') > -1) {
-                    target.className = target.className.replace(' expand', '');
-                    if (owner === 'THEAD') { this.contractAll(); }
-                } else {
-                    target.className += ' expand';
-                    if (owner === 'THEAD') { this.expandAll(); }
-                }
-            }
-            // Set toggleState
-            pos = parseInt(target.dataset['pos'], 10);
-            this.toggleState[pos] = !this.toggleState[pos];
-        },
-        
-        expandAll: function() {
-            var rows = document.getElementsByTagName('tr'),
-                i;
-            for (i = 0; i < rows.length; i++) {
-                if (rows[i].className.indexOf(' expand') === -1) {
-                    rows[i].className += ' expand';
-                }
-            }
-            // Set toggleState to all expanded
-            for (i = 0; i < this.toggleState.length; i++) { this.toggleState[i] = true; }
-        },
-        
-        contractAll: function() {
-            var rows = document.getElementsByTagName('tr'),
-                i;
-            for (i = 0; i < rows.length; i++) { 
-                rows[i].className = rows[i].className.replace(' expand', '');
-            }
-            // Set toggleState to all contracted
-            for (i = 0; i < this.toggleState.length; i++) { this.toggleState[i] = false; }
         },
 
         destroy: function destroy() {
@@ -420,6 +293,6 @@ spanmonth.appendChild(month);}
 
     };
 
-    window.Timeline = Timeline;
+    window.BedManager = BedManager;
 
 })();
