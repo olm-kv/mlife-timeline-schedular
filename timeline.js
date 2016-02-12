@@ -1,6 +1,6 @@
 (function () {
     var Timeline = {
-        titleText:'Bookings from ',
+        titleText:'Bookings from ',                                                 // Title text for timeline
         bookingData: {},                                                            // Would come from ajax
         colWidth: 30,                                                               // Width of each col in px
         width: 0,                                                                   // Width of timeline col in px
@@ -12,8 +12,8 @@
         data: {},                                                                   // Store initial bed data
         theme: 'default',                                                           // Theme class (default | blue | green)
         showBackButton: false,                                                      // Whether back button can be displayed
-        toggleState: [], 
-        $titleText: document.getElementById('timeline-title-text'),                                                     // State of expanded-collapsed headers
+        toggleState: [],                                                            // State of expanded-collapsed headers
+        $titleText: document.getElementById('timeline-title-text'),                 // Element holding the title text
         $timeline: document.getElementById('timeline'),                             // Timeline component element
         $table: document.getElementById('timeline-table'),                          // Table element
         $tableHead: document.getElementById('timeline-header'),                     // Table head element
