@@ -1,6 +1,6 @@
 (function () {
     var Timeline = {
-
+        titleText:'Bookings from ',
         bookingData: {},                                                            // Would come from ajax
         colWidth: 30,                                                               // Width of each col in px
         width: 0,                                                                   // Width of timeline col in px
@@ -12,7 +12,8 @@
         data: {},                                                                   // Store initial bed data
         theme: 'default',                                                           // Theme class (default | blue | green)
         showBackButton: false,                                                      // Whether back button can be displayed
-        toggleState: [],                                                            // State of expanded-collapsed headers
+        toggleState: [], 
+        $titleText: document.getElementById('timeline-title-text'),                                                     // State of expanded-collapsed headers
         $timeline: document.getElementById('timeline'),                             // Timeline component element
         $table: document.getElementById('timeline-table'),                          // Table element
         $tableHead: document.getElementById('timeline-header'),                     // Table head element
@@ -63,6 +64,12 @@
                     moment(startDateString, 'DD/MM/YYYY') :
                     moment().hour(0).minute(0).second(0);
             this.startDate = moment(startDate);
+
+            // Add tiitle text including the start date
+            this.$titleText.innerHTML = '';
+            newTitle=this.titleText+' '+this.startDate.format('d MMM YYYY');
+            content = document.createTextNode(newTitle);
+            this.$titleText.appendChild(content);
             
             // Draw header
             this.drawHeader(startDate);
