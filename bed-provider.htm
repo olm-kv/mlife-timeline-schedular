@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Timeline test</title>
+    <link rel="stylesheet" type="text/css" href="node_modules/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/cards.css" />
+    <link rel="stylesheet" type="text/css" href="css/styles.css" />
+    <link rel="stylesheet" type="text/css" href="css/themes.css" />
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container-fluid">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
+                    aria-expanded="false">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#">Booking Timeline</a>
+                </div>
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Theme <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#" onclick="Timeline.init(bedData, {theme: 'default',onClickView: viewBooking,onClickBed: newBooking})">Default</a></li>
+                                <li><a href="#" onclick="Timeline.init(bedData, {theme: 'blue',onClickView: viewBooking,onClickBed: newBooking})">Blue</a></li>
+                                <li><a href="#" onclick="Timeline.init(bedData, {theme: 'green',onClickView: viewBooking,onClickBed: newBooking})">Green</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <!-- /.navbar-collapse -->
+            </div>
+            <!-- /.container-fluid -->
+        </nav>
+    </header>
+
+    <!-- Nav buttons -->
+    <div class="container">
+        <div class="card-2 green timeline-nav">
+            <div class="row">
+                <div class="col-md-12 nav-btn">
+                    <div class='wrapper'>
+                            <button class="btn btn-advance" onclick="Timeline.advance()" >&nbsp;</button>
+                            <button class="btn btn-back" onclick="Timeline.back()">&nbsp;</button>
+                            <h2 id="timeline-title-text" class="white centre" ></h2>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Timeline Grid -->
+    <div class="container">
+        <div class="timeline card-2" id="timeline" data-start="">
+            <table class="table">
+                <thead id="timeline-header"></thead>
+                <tbody id="timeline-table">
+                    <tbody>
+            </table>
+        </div>
+    </div>
+    <!-- End Timeline Grid -->
+
+    <!-- Debug -->
+    <div class="container debug">
+        <pre id="debug"></pre>
+    </div>
+
+
+    <!-- View Booking Modal -->
+    <div id="view-booking-modal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Booking Details for Ref: <span class="booking-ref"></span></h4>
+                </div>
+                <div class="modal-body">
+                    <p>Client: <span class="client"></span></p>
+                    <p>Start Date: <span class="start"></span></p>
+                    <p>Duration: <span class="duration"></span></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary cancel-booking-button" onclick="alert('Cancel Booking')">Cancel Booking</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End View Booking Modal -->
+
+    <!-- New Booking Request Modal -->
+    <div id="new-booking-modal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Create New Booking Request for Bed: <span class="bed-id"></span></h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label for="client-name" class="col-sm-2 control-label">Client Name</label>
+                            <div class="col-sm-10">
+                                <input type="email" class="form-control" id="client-name">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="care-cat" class="col-sm-2 control-label">Care Category</label>
+                            <div class="col-sm-10">
+                                <select class="form-control">
+                                    <option>Residential</option>
+                                    <option>Dementia</option>
+                                    <option>Learning Difficulties</option>
+                                    <option>Physical Disability</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="start-date" class="col-sm-2 control-label">Start Date</label>
+                            <div class="col-sm-10">
+                                <input type="email" class="form-control" id="start-date" placeholder="dd/mm/yyyy">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary new-booking-button" onclick="alert('Request Booking')">Request Booking</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- New Booking Request Modal -->
+
+
+    <!-- Data Console -->
+    <div class="container top-margin-60">
+        <textarea class="code-container" id="code" rows="20"></textarea>
+        <button class="btn btn-primary" type="button" onclick="update()">Update</button>
+    </div>
+    <!-- End Data Console -->
+
+
+    <script src="node_modules/jquery/dist/jquery.js"></script>
+    <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="node_modules/moment/min/moment.min.js"></script>
+    <script src="beds.js"></script>
+    <script src="timeline.js"></script>
+
+    <script>
+        // Present the bed data for debug
+        $(document).ready(function() {
+            var data = JSON.stringify(bedData, null, 4);
+            var resizeTimer;
+            $('#code').text(data);
+            Timeline.init(bedData, {
+                theme: 'green',
+                onClickBooking: viewBooking,
+                onClickVacancy: newBooking
+            });
+            // Reddraw timeline after resize
+            $(window).on('resize', function(e) {
+
+              clearTimeout(resizeTimer);
+              resizeTimer = setTimeout(function() {
+                update();
+                        
+              }, 150);
+
+            });
+        });
+        
+        // Update data in timeline -- Test harness
+        function update() {
+            bedData = JSON.parse($('#code').val());
+            Timeline.init(bedData);
+        }
+        
+        // Example custom function for view click handler
+        function viewBooking(e) {
+            e.stopPropagation();
+            var el = e.target,
+                ref = el.dataset['ref'],
+                client = el.dataset['client'],
+                status = el.dataset['status'],
+                start = el.dataset['start'],
+                duration = el.dataset['duration'],
+                $modal;
+
+            // Hide all action buttons
+            $('.cancel-booking-button').hide();
+
+            // Identify the modal based on status
+            switch (status) {
+                case 'booked':
+                    $modal = $('#view-booking-modal');
+                    break;
+                case 'requested':
+                    $modal = $('#view-booking-modal');
+                    $('.cancel-booking-button').show();
+                    break;
+                case 'in-use':
+                    $modal = $('#view-booking-modal');
+                    break;
+                case 'available':
+                    $modal = $('#new-booking-modal');
+                    break;
+                default:
+                    $modal = $('#view-booking-modal');
+                    break;
+            }
+         
+            // Update modal with values
+            // We would fetch booking data from API here...
+            $('.booking-ref', $modal).text(ref);
+            $('.client', $modal).text(client);
+            $('.start', $modal).text(start);
+            $('.duration', $modal).text(duration + ' day' + ((duration > 1) ? 's' : ''));
+            
+            $('#view-booking-modal').modal();
+        }
+        
+        // Click handler for empty row event
+        function newBooking(e) {                                                 
+            e.stopPropagation();
+            var el = e.target,
+                bedId = el.id,
+                col = parseInt(e.offsetX / 30, 10),
+                date = moment(Timeline.startDate).add(col, 'days'),
+                $modal;
+                
+            $modal = $('#new-booking-modal');
+            $('.bed-id', $modal).text(bedId);
+            $('#start-date', $modal).val(date.format('DD/MM/YYYY'));
+            
+            
+            $modal.modal();
+        }
+    </script>
+
+</body>
+
+</html>
