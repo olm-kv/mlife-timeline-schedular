@@ -5,7 +5,7 @@
         colWidth: 30,                                                               // Width of each col in px
         width: 0,                                                                   // Width of timeline col in px
         numberOfDays: 0,                                                            // Number of days in timeline
-        dayClassName: 'date',                                                       // Class name for days divs
+        dayClassName: 'timeline-date',                                                       // Class name for days divs
         rowHeadClassName: 'home',                                                   // Class name for row heading
         startDate: '',                                                              // Start date for timeline
         endDate: '',                                                                // Computed end date for timeline
@@ -155,7 +155,7 @@
             div.className = className;
             // First day of month: need darker border
             if (date.date() === 1) { div.className += ' first'; }
-            span.className = 'day';
+            span.className = 'timeline-day';
             span.appendChild(day);
             div.appendChild(span);
             div.appendChild(d);

@@ -160,6 +160,7 @@
     <script src="node_modules/moment/min/moment.min.js"></script>
     <script src="beds.js"></script>
     <script src="timeline.js"></script>
+    <script src="bed-timeline.js"></script>
 
     <script>
         // Present the bed data for debug
@@ -167,7 +168,7 @@
             var data = JSON.stringify(bedData, null, 4);
             var resizeTimer;
             $('#code').text(data);
-            Timeline.init(bedData, {
+            BedManager.init(bedData, {
                 theme: 'green',
                 onClickBooking: viewBooking,
                 onClickVacancy: newBooking
@@ -187,7 +188,7 @@
         // Update data in timeline -- Test harness
         function update() {
             bedData = JSON.parse($('#code').val());
-            Timeline.init(bedData);
+            BedManager.init(bedData);
         }
         
         // Example custom function for view click handler
@@ -240,7 +241,7 @@
             var el = e.target,
                 bedId = el.id,
                 col = parseInt(e.offsetX / 30, 10),
-                date = moment(Timeline.startDate).add(col, 'days'),
+                date = moment(BedManager.startDate).add(col, 'days'),
                 $modal;
                 
             $modal = $('#new-booking-modal');
