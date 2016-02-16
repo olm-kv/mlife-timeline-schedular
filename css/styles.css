@@ -65,6 +65,11 @@ td .home:after {
     height: 24px;
 }
 
+
+.timeline.provider td .home:after,.timeline.provider th .home:after {
+    display: none;
+}
+
 tr.expand td .home:after,
 tr.expand .label-container:after {
     background: url("../images/ic_expand_less_white_24dp_1x.png") no-repeat top right;
@@ -87,6 +92,10 @@ tr.expand th .home:after {
     position: absolute;
     min-height: 36px;
     padding: 0;
+}
+
+.timeline.provider .bed {
+    display: block;
 }
 
 .bed-label {
@@ -269,5 +278,3 @@ tr.expand .vacancy {
     }
 }
   
-
-}

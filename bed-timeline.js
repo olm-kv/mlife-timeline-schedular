@@ -1,6 +1,6 @@
 (function () {
     var BedManager = {
-
+        titleText:'Bookings from ', 
         bookingData: {},                                                            // Would come from ajax
         colWidth: 30,                                                               // Width of each col in px
         width: 0,                                                                   // Width of timeline col in px
@@ -11,7 +11,8 @@
         endDate: '',                                                                // Computed end date for timeline
         data: {},                                                                   // Store initial bed data
         theme: 'default',                                                           // Theme class (default | blue | green)
-        showBackButton: false,                                                      // Whether back button can be displayed
+        showBackButton: false,
+        $titleText: document.getElementById('timeline-title-text'),                                                      // Whether back button can be displayed
         $timeline: document.getElementById('timeline'),                             // Timeline component element
         $table: document.getElementById('timeline-table'),                          // Table element
         $tableHead: document.getElementById('timeline-header'),                     // Table head element
@@ -62,6 +63,12 @@
                     moment(startDateString, 'DD/MM/YYYY') :
                     moment().hour(0).minute(0).second(0);
             this.startDate = moment(startDate);
+
+            // Add title text including the start date
+            this.$titleText.innerHTML = '';
+            newTitle=this.titleText+' '+this.startDate.format('d MMM YYYY');
+            content = document.createTextNode(newTitle);
+            this.$titleText.appendChild(content);
             
             // Draw header
             this.drawHeader(startDate);
@@ -150,11 +157,15 @@
         addDayToHeader: function addDayToHeader(el, date, className) {
             var div = document.createElement('div'),
                 span = document.createElement('span'),
+                spanmonth = document.createElement('span'),
                 day = document.createTextNode(date.format('ddd')),
-                d = document.createTextNode(date.format('D'));
+                d = document.createTextNode(date.format('D')),
+                month=document.createTextNode(date.format('MMM')),
+                m = date.format('MMM') ;
             div.className = className;
             // First day of month: need darker border
-            if (date.date() === 1) { div.className += ' first'; }
+            if (date.date() === 1) { div.className += ' first'; div.setAttribute('title', m);div.appendChild(spanmonth);spanmonth.className ='month';
+spanmonth.appendChild(month);}
             span.className = 'timeline-day';
             span.appendChild(day);
             div.appendChild(span);
