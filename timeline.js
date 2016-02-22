@@ -191,6 +191,7 @@
         drawBookings: function drawBookings(data) {
             var timeline = this,
                 $row,
+                $bookingsContainer,
                 $bed,
                 $bedLabel,
                 $vacancies,
@@ -201,6 +202,7 @@
             data.homes.forEach(function (home) {
                 // Create new row
                 $row = timeline.drawRow(home.name, pos++);
+                $bookingsContainer = $row.children[1].children[0];
                 
                 // Set toggled state to false
                 timeline.toggleState.push(false);
@@ -236,12 +238,13 @@
                             );
                             updateVacancies(booking.start, booking.duration);
                     });
+                    // Append to .bookings-container
                     $row.children[0].children[1].appendChild($bedLabel);
-                    $row.children[1].children[0].appendChild($bed);
+                    $bookingsContainer.appendChild($bed);
                 });
-                // Aggregated vacancies (contracted view)
+                // Insert aggregated vacancies (contracted view) as First Child of .bookings-container
                 $vacancies = timeline.drawVacancies(vacancies);
-                $row.children[1].children[0].appendChild($vacancies);
+                $bookingsContainer.insertBefore($vacancies, $bookingsContainer.firstChild);
 
                 // Append rows to timeline table
                 timeline.$table.appendChild($row);

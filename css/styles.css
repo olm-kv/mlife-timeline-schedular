@@ -53,7 +53,6 @@ th.row-timeline-heading, td.row-timeline {
 
 .home,
 .home-name {
-    /*height: 100%;*/
     padding: 8px;
 }
 
@@ -64,7 +63,6 @@ td .home:after {
     width: 24px;
     height: 24px;
 }
-
 
 tr.expand td .home:after,
 tr.expand .label-container:after {
@@ -93,9 +91,7 @@ tr.expand th .home:after {
 .bed-label {
     display: none;
 }
-tr.expand td .home {
-    display: none;
-}
+
 tr.expand .bed-label {
     display: block;
     padding: 8px;
@@ -197,25 +193,8 @@ td.row-heading .home:hover, .booking:hover, .bookings-container .bed:hover {
     background-color: #434A54;
     color: white;
 }
-tr.expand .vacancy {
-    display: none;
-}
 
 /** kv **/
-
-.label-container:last-child:after ,.green-timeline.timeline-nav:after{ /* divider */
-    content:'';
-    display:block;
-    border:none;
-    color:white;
-    height:1px;
-    background:black;
-    background: -webkit-gradient(radial, 50% 50%, 0, 50% 50%, 350, from(#000), to(#fff));
-    opacity: 0.1;
-}
-
-
-
 /* month marker */
 .timeline-date.first {position: relative;}
 
