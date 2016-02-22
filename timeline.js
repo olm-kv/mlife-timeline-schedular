@@ -4,10 +4,7 @@
         bookingData: {},                                                            // Would come from ajax
         colWidth: 30,                                                               // Width of each col in px
         width: 0,                                                                   // Width of timeline col in px
-<<<<<<< HEAD
-=======
         headingWidth: 0,                                                            // Width of heading column
->>>>>>> 0f6746d46d60a64c4173104b6432b69887bc0308
         dayClassName: 'timeline-date',                                              // Class name for days divs
         rowHeadClassName: 'home',                                                   // Class name for row heading
         numberOfDays: 0,                                                            // Number of days in timeline
@@ -37,7 +34,7 @@
                 document.getElementById(target.id).className = klass;
             }
         },
-        onOutVacancy: function(e) {
+        onOutVacancy: function (e) {
             var klass,
                 target = e.target;
             if (target.className.indexOf('bed') > -1) {
@@ -99,7 +96,7 @@
                 this[key] = options[key];
             }
         },
-        
+
         advance: function advance(days) {
             if (days === undefined) {
                 // Go to next date range
@@ -110,7 +107,7 @@
             }
             this.init();
         },
-        
+
         back: function back(days) {
             if (days === undefined) {
                 // Go to previous date range
@@ -169,18 +166,20 @@
                 span = document.createElement('span'),
                 spanmonth = document.createElement('span'),
                 day = document.createTextNode(date.format('ddd')),
-<<<<<<< HEAD
                 d = document.createTextNode(date.format('D')),
-                month=document.createTextNode(date.format('MMM')),
-                m = date.format('MMM') ;
-                                ;
+                month = document.createTextNode(date.format('MMM')),
+                m = date.format('MMM');
+
+            d = document.createTextNode(date.format('D'));
+            month = document.createTextNode(date.format('MMM')),
+            m = date.format('MMM');
             div.className = className;
             // First day of month: need darker border
             if (date.date() === 1) {
-                div.className += ' first';
-                div.setAttribute('title', m);
-                div.appendChild(spanmonth);
-                spanmonth.className ='month';
+                div.className += ' first'; 
+                div.setAttribute('title', m); 
+                div.appendChild(spanmonth); 
+                spanmonth.className = 'month';
                 spanmonth.appendChild(month);
             }
             span.className = 'timeline-day';
@@ -188,22 +187,7 @@
             div.appendChild(span);
             div.appendChild(d);
             el.appendChild(div);
-=======
-                d = document.createTextNode(date.format('D'));
-                month = document.createTextNode(date.format('MMM')),
-                m = date.format('MMM');
-                div.className = className;
-                // First day of month: need darker border
-                if (date.date() === 1) {
-                    div.className += ' first'; div.setAttribute('title', m); div.appendChild(spanmonth); spanmonth.className = 'month';
-                    spanmonth.appendChild(month);
-                }
-                span.className = 'timeline-day';
-                span.appendChild(day);
-                div.appendChild(span);
-                div.appendChild(d);
-                el.appendChild(div);
->>>>>>> 0f6746d46d60a64c4173104b6432b69887bc0308
+
         },
         
         // Draw a new row in timeline for each care home and
@@ -256,7 +240,7 @@
                             booking.client,
                             booking.id
                             );
-                            updateVacancies(booking.start, booking.duration);
+                        updateVacancies(booking.start, booking.duration);
                     });
                     // Append to .bookings-container
                     $row.children[0].children[1].appendChild($bedLabel);
@@ -281,8 +265,6 @@
                 bedLabelContainer = document.createElement('div'),
                 div = document.createElement('div'),
                 home = document.createTextNode(name);
-
-            
 
             heading.className = 'row-heading ' + this.theme;
             bookings.className = 'row-timeline';
@@ -398,7 +380,7 @@
             while (target.tagName !== 'TR') {
                 target = target.parentElement;
             }
-            
+
             if (target !== undefined) {
                 owner = target.parentElement.tagName;
                 if (target.className.indexOf(' expand') > -1) {
@@ -435,7 +417,7 @@
                 }
             }
         },
-        
+
         truncate: function () {
             var $t = document.getElementsByClassName('bed-label'),
                 i;
