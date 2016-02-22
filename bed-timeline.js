@@ -4,9 +4,10 @@
         bookingData: {},                                                            // Would come from ajax
         colWidth: 30,                                                               // Width of each col in px
         width: 0,                                                                   // Width of timeline col in px
+        headingWidth: 0,                                                            // Width of heading column
         numberOfDays: 0,                                                            // Number of days in timeline
-        dayClassName: 'date-timeline',                                              // Class name for days divs
-        rowHeadClassName: 'home',                                                   // Class name for row heading
+        dayClassName: 'timeline-date',                                              // Class name for days divs
+        rowHeadClassName: 'home-no-expand',                                         // Class name for row heading
         startDate: '',                                                              // Start date for timeline
         endDate: '',                                                                // Computed end date for timeline
         data: {},                                                                   // Store initial bed data
@@ -78,6 +79,9 @@
             // Draw bookings
             this.bookingData = data;
             this.drawBookings(this.bookingData);
+            
+            // Truncate rows
+            this.truncate();
         },
 
         setOptions: function setOptions(options) {
@@ -134,6 +138,7 @@
             this.$tableHead.appendChild(row);
 
             // Setup header 
+            this.headingWidth = th1.offsetWidth;
             this.width = th2.offsetWidth;
             this.numberOfDays = parseInt(this.width / this.colWidth, 10);
 
@@ -161,7 +166,7 @@
                 div.className += ' first'; div.setAttribute('title', m); div.appendChild(spanmonth); spanmonth.className = 'month';
                 spanmonth.appendChild(month);
             }
-            span.className = 'day-timeline';
+            span.className = 'timeline-day';
             span.appendChild(day);
             div.appendChild(span);
             div.appendChild(d);
@@ -212,29 +217,28 @@
                 home = document.createTextNode(name),
                 placementtype = document.createElement('div');
 
-
             div.setAttribute('bedid', bedid);
             div.setAttribute('providerid', providerid);
 
+            row.className = 'expand';
             heading.className = 'row-heading ' + this.theme;
             bookings.className = 'row-timeline';
             bookingsContainer.className = 'bookings-container';
-            bedLabelContainer.className = 'label-container';
-            div.className = this.rowHeadClassName;
-            div.appendChild(home);
+            bedLabelContainer.className = 'bed-container';
+            div.className = this.rowHeadClassName + ' truncate';
 
+            if (type === undefined) { type = 'long'; }
             placementtype.className = type + '-stay bed-type';
             placementtypeBadge = document.createElement('span');
-            placementtypeBadge.className = 'badge';
+            placementtypeBadge.className = 'bed-badge';
             placementtypeBadge.setAttribute('title', type + ' stay');
-            placementtypeInnerSpan = document.createElement('span');
-            placementtypeInnerSpan.className = 'offscreen';
-            placementtypeInnerSpan.appendChild(document.createTextNode(type + ' stay'));
-            placementtypeBadge.appendChild(placementtypeInnerSpan);
             placementtypeBadge.appendChild(document.createTextNode((type === 'short' ? 'SS' : 'LS')));
+
             placementtype.appendChild(placementtypeBadge);
-            heading.appendChild(div);
-            //heading.appendChild(placementtype);
+            div.appendChild(placementtype);
+            div.appendChild(home);
+            bedLabelContainer.appendChild(div);            
+            
             heading.appendChild(bedLabelContainer);
             row.appendChild(heading);
             row.appendChild(bookings);
@@ -313,6 +317,14 @@
                 }
             }
         },
+        
+        truncate: function () {
+            var $t = document.getElementsByClassName('bed-container'),
+                i;
+            for (i = 0; i < $t.length; i++) {
+                $t[i].style.width = this.headingWidth + 'px';
+            }
+        },
 
         debug: function (text) {
             document.getElementById('debug').innerText += text + '\n';
@@ -320,6 +332,6 @@
 
     };
 
-    window.BedManager = BedManager;
+    window.Timeline = BedManager;
 
 })();

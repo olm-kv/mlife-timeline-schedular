@@ -25,6 +25,14 @@ th.row-timeline-heading, td.row-timeline {
     width: 70%;
 }
 
+.timeline.provider td .home:after,.timeline.provider th .home:after {
+    display: none;
+}
+
+.timeline.provider .bed {
+    display: block;
+}
+
 .top-margin-60 {
     margin-top: 60px;
 }
@@ -55,7 +63,8 @@ th.row-timeline-heading, td.row-timeline {
 }
 
 .home,
-.home-name {
+.home-name,
+.home-no-expand {
     padding: 8px;
     font-size: 1.4em;
 }
@@ -96,6 +105,10 @@ tr.expand th .home:after {
     display: none;
 }
 
+.bed-name {
+    font-size: 1.4em;
+}
+
 .bed-type {
     float: left;
 }
@@ -121,9 +134,13 @@ tr.expand th .home:after {
     background-color: #E53935;
 }
 
-tr.expand .bed-label {
+tr.expand .bed-label{
     display: block;
     padding: 8px;
+}
+
+tr.expand .bed-label,
+.bed-container {
     text-indent: 5px;
 }
 
@@ -152,10 +169,15 @@ tr.expand .bed {
     white-space: nowrap;
     text-overflow:ellipsis; 
     height: 36px;
+    font-size: 1.4em;
 }
 
 td.row-heading .home:hover, .booking:hover, .bookings-container .bed:hover {
     cursor: pointer;
+}
+
+.bookings-container .bed .in-use:hover {
+    cursor: default;
 }
 
 .booking.booked {
@@ -303,8 +325,11 @@ td.row-heading .home:hover, .booking:hover, .bookings-container .bed:hover {
     }
     .home,
     .home-name,
+    .bed-name,
+    .home-no-expand,
     .vacancy,
-    .timeline-date {
+    .timeline-date,
+    .booking {
         font-size: 1em;
     }
 
