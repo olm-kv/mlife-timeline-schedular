@@ -232,7 +232,7 @@
             placementtypeBadge = document.createElement('span');
             placementtypeBadge.className = 'bed-badge';
             placementtypeBadge.setAttribute('title', type + ' stay');
-            placementtypeBadge.appendChild(document.createTextNode((type === 'short' ? 'SS' : 'LS')));
+            placementtypeBadge.appendChild(document.createTextNode((type === 'short' ? 'S' : 'L')));
 
             placementtype.appendChild(placementtypeBadge);
             div.appendChild(placementtype);

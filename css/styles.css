@@ -115,7 +115,7 @@ tr.expand th .home:after {
 
 .bed-badge {
     display: inline;
-    padding: 2px;
+    padding: 2px 4px;
     font-size: 75%;
     font-weight: 700;
     color: #fff;
