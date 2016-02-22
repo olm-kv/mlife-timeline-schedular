@@ -141,7 +141,7 @@
 
             th1.className = 'row-heading ' + this.theme;
             th2.className = 'row-timeline-heading ' + this.theme;
-            div.className = this.rowHeadClassName;
+            div.className = this.rowHeadClassName + '-name';
             div.appendChild(content);
             th1.appendChild(div);
             row.appendChild(th1);
@@ -381,37 +381,13 @@
                 owner = target.parentElement.tagName;
                 if (target.className.indexOf(' expand') > -1) {
                     target.className = target.className.replace(' expand', '');
-                    if (owner === 'THEAD') { this.contractAll(); }
                 } else {
                     target.className += ' expand';
-                    if (owner === 'THEAD') { this.expandAll(); }
                 }
             }
             // Set toggleState
             pos = parseInt(target.dataset['pos'], 10);
             this.toggleState[pos] = !this.toggleState[pos];
-        },
-        
-        expandAll: function() {
-            var rows = document.getElementsByTagName('tr'),
-                i;
-            for (i = 0; i < rows.length; i++) {
-                if (rows[i].className.indexOf(' expand') === -1) {
-                    rows[i].className += ' expand';
-                }
-            }
-            // Set toggleState to all expanded
-            for (i = 0; i < this.toggleState.length; i++) { this.toggleState[i] = true; }
-        },
-        
-        contractAll: function() {
-            var rows = document.getElementsByTagName('tr'),
-                i;
-            for (i = 0; i < rows.length; i++) { 
-                rows[i].className = rows[i].className.replace(' expand', '');
-            }
-            // Set toggleState to all contracted
-            for (i = 0; i < this.toggleState.length; i++) { this.toggleState[i] = false; }
         },
 
         destroy: function destroy() {

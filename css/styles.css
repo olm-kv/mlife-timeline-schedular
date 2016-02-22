@@ -51,7 +51,8 @@ th.row-timeline-heading, td.row-timeline {
     font-variant: small-caps;
 }
 
-.home {
+.home,
+.home-name {
     /*height: 100%;*/
     padding: 8px;
 }
