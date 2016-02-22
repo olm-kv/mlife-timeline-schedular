@@ -1,9 +1,13 @@
 (function () {
     var Timeline = {
-        titleText:'Bookings from ',                                                 // Title text for timeline
+        titleText: 'Bookings from ',                                                // Title text for timeline
         bookingData: {},                                                            // Would come from ajax
         colWidth: 30,                                                               // Width of each col in px
         width: 0,                                                                   // Width of timeline col in px
+<<<<<<< HEAD
+=======
+        headingWidth: 0,                                                            // Width of heading column
+>>>>>>> 0f6746d46d60a64c4173104b6432b69887bc0308
         dayClassName: 'timeline-date',                                              // Class name for days divs
         rowHeadClassName: 'home',                                                   // Class name for row heading
         numberOfDays: 0,                                                            // Number of days in timeline
@@ -64,20 +68,19 @@
                     moment(startDateString, 'DD/MM/YYYY') :
                     moment().hour(0).minute(0).second(0);
             this.startDate = moment(startDate);
-
+            
             // Add title text including the start date
             this.$titleText.innerHTML = '';
-            newTitle=this.titleText+' '+this.startDate.format('d MMM YYYY');
+            newTitle = this.titleText + ' ' + this.startDate.format('d MMM YYYY');
             content = document.createTextNode(newTitle);
             this.$titleText.appendChild(content);
-            
             // Draw header
             this.drawHeader(startDate);
             
             // Draw bookings
             this.bookingData = data;
             this.drawBookings(this.bookingData);
-            
+
             // Reinstate toggleState
             for (i = 0; i < this.toggleState.length; i++) {
                 if (this.toggleState[i]) {
@@ -85,6 +88,9 @@
                     tr[0].className += ' expand';
                 }
             }
+            
+            // Truncate rows
+            this.truncate();
         },
 
         setOptions: function setOptions(options) {
@@ -95,12 +101,9 @@
         },
         
         advance: function advance(days) {
-            var next;
             if (days === undefined) {
-                // Go to first monday in next month
-                next = this.startDate.endOf('month').add(1, 'day');
-                while (next.day() !== 1) { next.add(1, 'day'); }
-                this.startDate = next;
+                // Go to next date range
+                this.startDate.add(this.numberOfDays, 'days');
             } else {
                 // Advance requested number of days
                 this.startDate.add(days, 'days');
@@ -109,15 +112,9 @@
         },
         
         back: function back(days) {
-            var last;
             if (days === undefined) {
-                // Go to first monday in last month
-                last = this.startDate.startOf('month').subtract(1, 'month');                
-                while (last.day() !== 1) { last.add(1, 'day'); }
-                // Don't go earlier than today
-                this.startDate = (last < moment().hour(0).minute(0).second(0)) ?
-                    moment().hour(0).minute(0).second(0) : 
-                    last;
+                // Go to previous date range
+                this.startDate.add(-this.numberOfDays, 'days');
                 this.init();
             } else {
                 // Go back requested number of days
@@ -142,7 +139,7 @@
 
             th1.className = 'row-heading ' + this.theme;
             th2.className = 'row-timeline-heading ' + this.theme;
-            div.className = this.rowHeadClassName;
+            div.className = this.rowHeadClassName + '-name';
             div.appendChild(content);
             th1.appendChild(div);
             row.appendChild(th1);
@@ -153,6 +150,7 @@
             div.addEventListener('click', this.toggle.bind(this));
             
             // Setup header 
+            this.headingWidth = th1.offsetWidth;
             this.width = th2.offsetWidth;
             this.numberOfDays = parseInt(this.width / this.colWidth, 10);
             
@@ -171,6 +169,7 @@
                 span = document.createElement('span'),
                 spanmonth = document.createElement('span'),
                 day = document.createTextNode(date.format('ddd')),
+<<<<<<< HEAD
                 d = document.createTextNode(date.format('D')),
                 month=document.createTextNode(date.format('MMM')),
                 m = date.format('MMM') ;
@@ -189,6 +188,22 @@
             div.appendChild(span);
             div.appendChild(d);
             el.appendChild(div);
+=======
+                d = document.createTextNode(date.format('D'));
+                month = document.createTextNode(date.format('MMM')),
+                m = date.format('MMM');
+                div.className = className;
+                // First day of month: need darker border
+                if (date.date() === 1) {
+                    div.className += ' first'; div.setAttribute('title', m); div.appendChild(spanmonth); spanmonth.className = 'month';
+                    spanmonth.appendChild(month);
+                }
+                span.className = 'timeline-day';
+                span.appendChild(day);
+                div.appendChild(span);
+                div.appendChild(d);
+                el.appendChild(div);
+>>>>>>> 0f6746d46d60a64c4173104b6432b69887bc0308
         },
         
         // Draw a new row in timeline for each care home and
@@ -196,6 +211,7 @@
         drawBookings: function drawBookings(data) {
             var timeline = this,
                 $row,
+                $bookingsContainer,
                 $bed,
                 $bedLabel,
                 $vacancies,
@@ -206,6 +222,7 @@
             data.homes.forEach(function (home) {
                 // Create new row
                 $row = timeline.drawRow(home.name, pos++);
+                $bookingsContainer = $row.children[1].children[0];
                 
                 // Set toggled state to false
                 timeline.toggleState.push(false);
@@ -213,20 +230,20 @@
                 // Initialise vacancies data for the home
                 vacancies = [];
                 for (i = 0; i < timeline.numberOfDays; i++) { vacancies.push(home.beds.length); };
-                
+
                 function updateVacancies(start, duration) {
                     var date = moment(start, 'DD/MM/YYYY'),
                         offset = timeline.positionFromDate(start);
                     if ((date < timeline.endDate) && (date.add(duration, 'days') > timeline.startDate)) {
                         i = (offset < 0) ? 0 : offset;
                         while ((i < vacancies.length) && (i < (offset + duration))) { vacancies[i++] -= 1; };
-                    }    
+                    }
                 };
-                
+
                 // Add beds
                 home.beds.forEach(function (bed) {
-                    $bedLabel = timeline.drawBedLabel(home.name, bed.id, bed.name);
-                    $bed = timeline.drawBed(bed.id, bed.name);
+                    $bedLabel = timeline.drawBedLabel(home.name, bed.id, bed.name, bed.providerid, bed.type);
+                    $bed = timeline.drawBed(bed.id, bed.name, bed.providerid);
                     
                     // Create each booking rectangle in row
                     var b = bed.bookings.forEach(function (booking) {
@@ -236,18 +253,19 @@
                             booking.status,
                             booking.start,
                             booking.duration,
-                            booking.client
-                        );
-                        updateVacancies(booking.start, booking.duration);
+                            booking.client,
+                            booking.id
+                            );
+                            updateVacancies(booking.start, booking.duration);
                     });
-                    // Add elements to row in DOM
-                    $row.children[0].children[1].appendChild($bedLabel);    // Bed name
-                    $row.children[1].children[0].appendChild($bed);         // Bookings (expanded view)
+                    // Append to .bookings-container
+                    $row.children[0].children[1].appendChild($bedLabel);
+                    $bookingsContainer.appendChild($bed);
                 });
-                // Aggregated vacancies (contracted view)
+                // Insert aggregated vacancies (contracted view) as First Child of .bookings-container
                 $vacancies = timeline.drawVacancies(vacancies);
-                $row.children[1].children[0].appendChild($vacancies);   
-                
+                $bookingsContainer.insertBefore($vacancies, $bookingsContainer.firstChild);
+
                 // Append rows to timeline table
                 timeline.$table.appendChild($row);
             });
@@ -263,6 +281,8 @@
                 bedLabelContainer = document.createElement('div'),
                 div = document.createElement('div'),
                 home = document.createTextNode(name);
+
+            
 
             heading.className = 'row-heading ' + this.theme;
             bookings.className = 'row-timeline';
@@ -283,23 +303,41 @@
         },
         
         // Add a bed label div element to row heading
-        drawBedLabel: function drawBedLabel(home, id, bedName) {
+        drawBedLabel: function drawBedLabel(home, id, bedName, providerid, type) {
+            var container = document.createElement('div');
             var bed = document.createElement('div'),
-                bedName = document.createTextNode(home + ' - ' + bedName);
+                bedName = document.createTextNode(bedName);
             bed.dataset['id'] = id;
-            bed.className = 'bed-label';
-            bed.appendChild(bedName);
+            container.className = 'bed-label';
+            bed.className = 'bed-name truncate';
+            bed.setAttribute('providerid', providerid);
                         
             // Add bed container hover and click handlers (available day)
-            return bed;
+            //bed.addEventListener('click', this.onClickVacancy);
+            //container.appendChild(bed);
+
+            var placementtype = document.createElement('div');
+            if (type === undefined) { type = 'long'; }
+            placementtype.className = type + '-stay bed-type';
+            placementtypeBadge = document.createElement('span');
+            placementtypeBadge.className = 'bed-badge';
+            placementtypeBadge.setAttribute('title', type + ' stay');
+            placementtypeBadge.appendChild(document.createTextNode((type === 'short' ? 'S' : 'L')));
+            placementtype.appendChild(placementtypeBadge);
+
+            bed.appendChild(placementtype);
+            bed.appendChild(bedName);
+            container.appendChild(bed);
+            return container;
+            //return bed;
         },
         
         // Add a bed div element with a click handler
-        drawBed: function drawBed(id, name) {
+        drawBed: function drawBed(id, name, providerid) {
             var bed = document.createElement('div');
             bed.id = id;
             bed.className = 'bed';
-                        
+            bed.setAttribute('providerid', providerid);
             // Add bed container hover and click handlers (available day)
             bed.addEventListener('mouseover', this.onHoverVacancy);
             bed.addEventListener('mouseout', this.onOutVacancy);
@@ -308,14 +346,13 @@
         },
         
         // Add an individual booking rectangle to element el
-        drawBooking: function drawBooking(el, ref, status, start, duration, client) {
+        drawBooking: function drawBooking(el, ref, status, start, duration, client, id) {
             var div = document.createElement('div'),
                 content = document.createTextNode((client !== undefined) ? client : ''),
                 date = moment(start, 'DD/MM/YYYY'),
                 offset = this.positionFromDate(start), /* Number of days from start */
                 left = ((offset * 30) < 0) ? 0 : (offset * 30),
                 right = ((left + (duration * 30)) > this.width) ? this.width - 1 : (left + (duration * 30) - 1);
-                // right = (((offset + duration * 30)) > this.width) ? this.width - 1 : ((offset + duration) * 30) - 1;
 
             // Only draw booking if it falls in current timeline range
             if ((date < this.endDate) && (date.add(duration, 'days') > this.startDate)) {
@@ -331,19 +368,18 @@
                 if (start !== undefined) { div.dataset['start'] = start; }
                 if (client !== undefined) { div.dataset['client'] = client; }
                 if (duration !== undefined) { div.dataset['duration'] = duration; }
+                if (id !== undefined) { div.setAttribute('bookingid', id); }
                 div.addEventListener('click', this.onClickBooking);
 
                 div.appendChild(content);
                 el.appendChild(div);
             }
         },
-        
         drawVacancies: function drawVacancies(vacancies) {
             var div = document.createElement('div'),
                 v,
                 beds,
                 i = 0;
-            
             while (i < vacancies.length) {
                 v = document.createElement('div');
                 v.className = 'vacancy' + (vacancies[i] === 0 ? ' vacancy-none' : '');
@@ -353,7 +389,6 @@
             }
             return div;
         },
-        
         // When clicking a row heading, expand or collapse bookings in row
         // The toggle class is "expand" and is applied to the row element
         toggle: function toggle(e) {
@@ -368,37 +403,13 @@
                 owner = target.parentElement.tagName;
                 if (target.className.indexOf(' expand') > -1) {
                     target.className = target.className.replace(' expand', '');
-                    if (owner === 'THEAD') { this.contractAll(); }
                 } else {
                     target.className += ' expand';
-                    if (owner === 'THEAD') { this.expandAll(); }
                 }
             }
             // Set toggleState
             pos = parseInt(target.dataset['pos'], 10);
             this.toggleState[pos] = !this.toggleState[pos];
-        },
-        
-        expandAll: function() {
-            var rows = document.getElementsByTagName('tr'),
-                i;
-            for (i = 0; i < rows.length; i++) {
-                if (rows[i].className.indexOf(' expand') === -1) {
-                    rows[i].className += ' expand';
-                }
-            }
-            // Set toggleState to all expanded
-            for (i = 0; i < this.toggleState.length; i++) { this.toggleState[i] = true; }
-        },
-        
-        contractAll: function() {
-            var rows = document.getElementsByTagName('tr'),
-                i;
-            for (i = 0; i < rows.length; i++) { 
-                rows[i].className = rows[i].className.replace(' expand', '');
-            }
-            // Set toggleState to all contracted
-            for (i = 0; i < this.toggleState.length; i++) { this.toggleState[i] = false; }
         },
 
         destroy: function destroy() {
@@ -422,6 +433,14 @@
                 for (i = 0; i < l; i++) {
                     el.removeChild(el.childNodes[0]);
                 }
+            }
+        },
+        
+        truncate: function () {
+            var $t = document.getElementsByClassName('bed-label'),
+                i;
+            for (i = 0; i < $t.length; i++) {
+                $t[i].style.width = this.headingWidth + 'px';
             }
         },
 

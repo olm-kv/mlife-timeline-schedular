@@ -1,17 +1,19 @@
 (function () {
     var BedManager = {
-
+        titleText: 'Bookings from ',
         bookingData: {},                                                            // Would come from ajax
         colWidth: 30,                                                               // Width of each col in px
         width: 0,                                                                   // Width of timeline col in px
+        headingWidth: 0,                                                            // Width of heading column
         numberOfDays: 0,                                                            // Number of days in timeline
-        dayClassName: 'date',                                                       // Class name for days divs
-        rowHeadClassName: 'home',                                                   // Class name for row heading
+        dayClassName: 'timeline-date',                                              // Class name for days divs
+        rowHeadClassName: 'home-no-expand',                                         // Class name for row heading
         startDate: '',                                                              // Start date for timeline
         endDate: '',                                                                // Computed end date for timeline
         data: {},                                                                   // Store initial bed data
         theme: 'default',                                                           // Theme class (default | blue | green)
         showBackButton: false,                                                      // Whether back button can be displayed
+        $titleText: document.getElementById('timeline-title-text'),                 // Element holding the title text
         $timeline: document.getElementById('timeline'),                             // Timeline component element
         $table: document.getElementById('timeline-table'),                          // Table element
         $tableHead: document.getElementById('timeline-header'),                     // Table head element
@@ -44,31 +46,42 @@
 
         init: function init(data, options) {
             if (options !== undefined) { this.setOptions(options); }
-            
+
             // Store data
             if (data !== undefined) {
                 this.data = data;
             } else {
                 data = this.data;   //TODO: circular - need to ensure data for first time
             }
-            
+
             // Destroy current instance
             this.destroy();
-            
+
+            var startValue = this.$timeline.dataset !== undefined && this.$timeline.dataset['start'] != undefined ? this.$timeline.dataset['start'] : this.$timeline.getAttribute("start");
+
             // Set days in table headings
             // Get start date from timeline component.  If empty, use today.
-            var startDateString = (this.startDate != '') ? this.startDate : this.$timeline.dataset['start'],
+            var startDateString = (this.startDate != '') ? this.startDate : startValue,// this.$timeline.dataset['start'],
                 startDate = (startDateString != '') ?
                     moment(startDateString, 'DD/MM/YYYY') :
                     moment().hour(0).minute(0).second(0);
             this.startDate = moment(startDate);
-            
+
+            // Add title text including the start date
+            this.$titleText.innerHTML = '';
+            newTitle = this.titleText + ' ' + this.startDate.format('d MMM YYYY');
+            content = document.createTextNode(newTitle);
+            this.$titleText.appendChild(content);
+
             // Draw header
             this.drawHeader(startDate);
-            
+
             // Draw bookings
             this.bookingData = data;
             this.drawBookings(this.bookingData);
+            
+            // Truncate rows
+            this.truncate();
         },
 
         setOptions: function setOptions(options) {
@@ -79,42 +92,33 @@
         },
 
         advance: function advance(days) {
-            var next;
             if (days === undefined) {
-                // Go to first monday in next month
-                next = this.startDate.endOf('month').add(1, 'day');
-                while (next.day() !== 1) { next.add(1, 'day'); }
-                this.startDate = next;
+                // Go to next date range
+                this.startDate.add(this.numberOfDays, 'days');
             } else {
                 // Advance requested number of days
                 this.startDate.add(days, 'days');
             }
             this.init();
         },
-
+        
         back: function back(days) {
-            var last;
             if (days === undefined) {
-                // Go to first monday in last month
-                last = this.startDate.startOf('month').subtract(1, 'month');
-                while (last.day() !== 1) { last.add(1, 'day'); }
-                // Don't go earlier than today
-                this.startDate = (last < moment().hour(0).minute(0).second(0)) ?
-                    moment().hour(0).minute(0).second(0) :
-                    last;
+                // Go to previous date range
+                this.startDate.add(-this.numberOfDays, 'days');
                 this.init();
             } else {
                 // Go back requested number of days
                 this.advance(-days);
             }
         },
-        
+
         // Calculate how many days dateString occurs from start date of timeline
         positionFromDate: function positionFromDate(dateString) {
             var date = moment(dateString, 'DD/MM/YYYY');
             return moment.duration(date.diff(this.startDate)).asDays();
         },
-        
+
         // Draw the header element
         drawHeader: function drawHeader(date) {
             var row = document.createElement('tr'),
@@ -132,11 +136,12 @@
             row.appendChild(th1);
             row.appendChild(th2);
             this.$tableHead.appendChild(row);
-            
+
             // Setup header 
+            this.headingWidth = th1.offsetWidth;
             this.width = th2.offsetWidth;
             this.numberOfDays = parseInt(this.width / this.colWidth, 10);
-            
+
             // Draw days into header
             for (d = 0; d < this.numberOfDays; d++) {
                 this.addDayToHeader(th2, date, this.dayClassName);
@@ -145,23 +150,29 @@
             // Update endDate of component
             this.endDate = date.add(-1, 'days');
         },
-        
+
         // Write day numbers into timeline header
         addDayToHeader: function addDayToHeader(el, date, className) {
             var div = document.createElement('div'),
                 span = document.createElement('span'),
+                spanmonth = document.createElement('span'),
                 day = document.createTextNode(date.format('ddd')),
                 d = document.createTextNode(date.format('D'));
+            month = document.createTextNode(date.format('MMM')),
+            m = date.format('MMM');
             div.className = className;
             // First day of month: need darker border
-            if (date.date() === 1) { div.className += ' first'; }
-            span.className = 'day';
+            if (date.date() === 1) {
+                div.className += ' first'; div.setAttribute('title', m); div.appendChild(spanmonth); spanmonth.className = 'month';
+                spanmonth.appendChild(month);
+            }
+            span.className = 'timeline-day';
             span.appendChild(day);
             div.appendChild(span);
             div.appendChild(d);
             el.appendChild(div);
         },
-        
+
         // Draw a new row in timeline for each care home and
         // draw each booking rectangle into the correct row
         drawBookings: function drawBookings(data) {
@@ -171,77 +182,95 @@
 
             data.homes[0].beds.forEach(function (bed) {
                 // Create new row
-                $row = timeline.drawRow(bed.name);
+                $row = timeline.drawRow(bed.name, bed.id, bed.providerid, bed.type);
                 $bed = timeline.drawBed(bed.id, bed.name);
-                
+
                 // Create each booking rectangle in row
                 bed.bookings.forEach(function (booking) {
+
                     timeline.drawBooking(
                         $bed,
                         booking.ref,
                         booking.status,
                         booking.start,
                         booking.duration,
-                        booking.client
-                    )
+                        booking.client,
+                        booking.id
+                    );
                 });
                 $row.children[1].children[0].appendChild($bed);
-                
+
                 // Append rows to timeline table
                 timeline.$table.appendChild($row);
             });
         },
-        
+
         // Create and return the template structure for a 
         // Care Home row in the timleline table
-        drawRow: function drawRow(name) {
+        drawRow: function drawRow(name, bedid, providerid, type) {
             var row = document.createElement('tr'),
                 heading = document.createElement('td'),
                 bookings = document.createElement('td'),
                 bookingsContainer = document.createElement('div'),
                 bedLabelContainer = document.createElement('div'),
                 div = document.createElement('div'),
-                home = document.createTextNode(name);
+                home = document.createTextNode(name),
+                placementtype = document.createElement('div');
 
+            div.setAttribute('bedid', bedid);
+            div.setAttribute('providerid', providerid);
+
+            row.className = 'expand';
             heading.className = 'row-heading ' + this.theme;
             bookings.className = 'row-timeline';
             bookingsContainer.className = 'bookings-container';
-            bedLabelContainer.className = 'label-container';
-            div.className = this.rowHeadClassName;
+            bedLabelContainer.className = 'bed-container';
+            div.className = this.rowHeadClassName + ' truncate';
+
+            if (type === undefined) { type = 'long'; }
+            placementtype.className = type + '-stay bed-type';
+            placementtypeBadge = document.createElement('span');
+            placementtypeBadge.className = 'bed-badge';
+            placementtypeBadge.setAttribute('title', type + ' stay');
+            placementtypeBadge.appendChild(document.createTextNode((type === 'short' ? 'S' : 'L')));
+
+            placementtype.appendChild(placementtypeBadge);
+            div.appendChild(placementtype);
             div.appendChild(home);
-            heading.appendChild(div);
+            bedLabelContainer.appendChild(div);            
+            
             heading.appendChild(bedLabelContainer);
             row.appendChild(heading);
             row.appendChild(bookings);
             bookings.appendChild(bookingsContainer);
-            
+
             // Add row heading expand and contract handler
             heading.addEventListener('click', this.onClickBed);
             return row;
         },
-        
+
         // Add a bed div element with a click handler
         drawBed: function drawBed(id, name) {
             var bed = document.createElement('div');
             bed.id = id;
             bed.className = 'bed';
-                        
+
             // Add bed container hover and click handlers (available day)
             bed.addEventListener('mouseover', this.onHoverVacancy);
             bed.addEventListener('mouseout', this.onOutVacancy);
             bed.addEventListener('click', this.onClickVacancy);
             return bed;
         },
-        
+
         // Add an individual booking rectangle to element el
-        drawBooking: function drawBooking(el, ref, status, start, duration, client) {
+        drawBooking: function drawBooking(el, ref, status, start, duration, client, id) {
             var div = document.createElement('div'),
                 content = document.createTextNode((client !== undefined) ? client : ''),
                 date = moment(start, 'DD/MM/YYYY'),
                 offset = this.positionFromDate(start), /* Number of days from start */
-                left = ((offset * 30) < 0) ? 0 : offset * 30,
+                left = ((offset * 30) < 0) ? 0 : (offset * 30),
                 right = ((left + (duration * 30)) > this.width) ? this.width - 1 : (left + (duration * 30) - 1);
-                
+
             // Only draw booking if it falls in current timeline range
             if ((date < this.endDate) && (date.add(duration, 'days') > this.startDate)) {
                 // Styles
@@ -249,13 +278,15 @@
                 div.id = ref;
                 div.style.left = left + 'px';
                 div.style.width = (right - left) + 'px';
-                
-                // Data and Events
-                if (ref !== undefined) { div.dataset['ref'] = ref; }
-                if (status !== undefined) { div.dataset['status'] = status; }
-                if (start !== undefined) { div.dataset['start'] = start; }
-                if (client !== undefined) { div.dataset['client'] = client; }
-                if (duration !== undefined) { div.dataset['duration'] = duration; }
+
+                // Data and Events               
+                if (ref !== undefined) { div.setAttribute('ref', ref); }
+                if (status !== undefined) { div.setAttribute('status', status); }
+                if (start !== undefined) { div.setAttribute('start', start); }
+                if (client !== undefined) { div.setAttribute('client', client); }
+                if (duration !== undefined) { div.setAttribute('duration', duration); }
+                if (id !== undefined) { div.setAttribute('bookingid', id); }
+
                 div.addEventListener('click', this.onClickBooking);
 
                 div.appendChild(content);
@@ -286,6 +317,14 @@
                 }
             }
         },
+        
+        truncate: function () {
+            var $t = document.getElementsByClassName('bed-container'),
+                i;
+            for (i = 0; i < $t.length; i++) {
+                $t[i].style.width = this.headingWidth + 'px';
+            }
+        },
 
         debug: function (text) {
             document.getElementById('debug').innerText += text + '\n';
@@ -293,6 +332,6 @@
 
     };
 
-    window.BedManager = BedManager;
+    window.Timeline = BedManager;
 
 })();
