@@ -1,10 +1,10 @@
 (function () {
     var Timeline = {
-        titleText:'Bookings from ',                                                 // Title text for timeline
+        titleText: 'Bookings from ',                                                // Title text for timeline
         bookingData: {},                                                            // Would come from ajax
         colWidth: 30,                                                               // Width of each col in px
         width: 0,                                                                   // Width of timeline col in px
-        dayClassName: 'timeline-date',                                                       // Class name for days divs
+        dayClassName: 'timeline-date',                                              // Class name for days divs
         rowHeadClassName: 'home',                                                   // Class name for row heading
         numberOfDays: 0,                                                            // Number of days in timeline
         startDate: '',                                                              // Start date for timeline
@@ -64,20 +64,19 @@
                     moment(startDateString, 'DD/MM/YYYY') :
                     moment().hour(0).minute(0).second(0);
             this.startDate = moment(startDate);
-
+            
             // Add title text including the start date
             this.$titleText.innerHTML = '';
-            newTitle=this.titleText+' '+this.startDate.format('d MMM YYYY');
+            newTitle = this.titleText + ' ' + this.startDate.format('d MMM YYYY');
             content = document.createTextNode(newTitle);
             this.$titleText.appendChild(content);
-            
             // Draw header
             this.drawHeader(startDate);
             
             // Draw bookings
             this.bookingData = data;
             this.drawBookings(this.bookingData);
-            
+
             // Reinstate toggleState
             for (i = 0; i < this.toggleState.length; i++) {
                 if (this.toggleState[i]) {
@@ -171,21 +170,20 @@
                 span = document.createElement('span'),
                 spanmonth = document.createElement('span'),
                 day = document.createTextNode(date.format('ddd')),
-                d = document.createTextNode(date.format('D')),
-                month=document.createTextNode(date.format('MMM')),
-                m = date.format('MMM') ;
-                                ;
-            div.className = className;
-            // First day of month: need darker border
-            if (date.date() === 1) { div.className += ' first'; div.setAttribute('title', m);div.appendChild(spanmonth);spanmonth.className ='month';
-spanmonth.appendChild(month);}
-
-            span.className = 'timeline-day';
-            span.appendChild(day);
-    
-            div.appendChild(span);
-            div.appendChild(d);
-            el.appendChild(div);
+                d = document.createTextNode(date.format('D'));
+                month = document.createTextNode(date.format('MMM')),
+                m = date.format('MMM');
+                div.className = className;
+                // First day of month: need darker border
+                if (date.date() === 1) {
+                    div.className += ' first'; div.setAttribute('title', m); div.appendChild(spanmonth); spanmonth.className = 'month';
+                    spanmonth.appendChild(month);
+                }
+                span.className = 'timeline-day';
+                span.appendChild(day);
+                div.appendChild(span);
+                div.appendChild(d);
+                el.appendChild(div);
         },
         
         // Draw a new row in timeline for each care home and
@@ -210,20 +208,20 @@ spanmonth.appendChild(month);}
                 // Initialise vacancies data for the home
                 vacancies = [];
                 for (i = 0; i < timeline.numberOfDays; i++) { vacancies.push(home.beds.length); };
-                
+
                 function updateVacancies(start, duration) {
                     var date = moment(start, 'DD/MM/YYYY'),
                         offset = timeline.positionFromDate(start);
                     if ((date < timeline.endDate) && (date.add(duration, 'days') > timeline.startDate)) {
                         i = (offset < 0) ? 0 : offset;
                         while ((i < vacancies.length) && (i < (offset + duration))) { vacancies[i++] -= 1; };
-                    }    
+                    }
                 };
-                
+
                 // Add beds
                 home.beds.forEach(function (bed) {
-                    $bedLabel = timeline.drawBedLabel(home.name, bed.id, bed.name);
-                    $bed = timeline.drawBed(bed.id, bed.name);
+                    $bedLabel = timeline.drawBedLabel(home.name, bed.id, bed.name, bed.providerid, bed.type);
+                    $bed = timeline.drawBed(bed.id, bed.name, bed.providerid);
                     
                     // Create each booking rectangle in row
                     var b = bed.bookings.forEach(function (booking) {
@@ -233,18 +231,18 @@ spanmonth.appendChild(month);}
                             booking.status,
                             booking.start,
                             booking.duration,
-                            booking.client
-                        );
-                        updateVacancies(booking.start, booking.duration);
+                            booking.client,
+                            booking.id
+                            );
+                            updateVacancies(booking.start, booking.duration);
                     });
-                    // Add elements to row in DOM
-                    $row.children[0].children[1].appendChild($bedLabel);    // Bed name
-                    $row.children[1].children[0].appendChild($bed);         // Bookings (expanded view)
+                    $row.children[0].children[1].appendChild($bedLabel);
+                    $row.children[1].children[0].appendChild($bed);
                 });
                 // Aggregated vacancies (contracted view)
                 $vacancies = timeline.drawVacancies(vacancies);
-                $row.children[1].children[0].appendChild($vacancies);   
-                
+                $row.children[1].children[0].appendChild($vacancies);
+
                 // Append rows to timeline table
                 timeline.$table.appendChild($row);
             });
@@ -260,6 +258,8 @@ spanmonth.appendChild(month);}
                 bedLabelContainer = document.createElement('div'),
                 div = document.createElement('div'),
                 home = document.createTextNode(name);
+
+            
 
             heading.className = 'row-heading ' + this.theme;
             bookings.className = 'row-timeline';
@@ -280,23 +280,42 @@ spanmonth.appendChild(month);}
         },
         
         // Add a bed label div element to row heading
-        drawBedLabel: function drawBedLabel(home, id, bedName) {
+        drawBedLabel: function drawBedLabel(home, id, bedName, providerid, type) {
+            var container = document.createElement('div');
             var bed = document.createElement('div'),
                 bedName = document.createTextNode(home + ' - ' + bedName);
             bed.dataset['id'] = id;
-            bed.className = 'bed-label';
+            container.className = 'bed-label';
+            bed.className = 'bed-name bed-label';
             bed.appendChild(bedName);
+            bed.setAttribute('providerid', providerid);
                         
             // Add bed container hover and click handlers (available day)
+            //bed.addEventListener('click', this.onClickVacancy);
+            container.appendChild(bed);
+
+            var placementtype = document.createElement('div');
+            placementtype.className = type + '-stay bed-type';
+            placementtypeBadge = document.createElement('span');
+            placementtypeBadge.className = 'badge';
+            placementtypeBadge.setAttribute('title', type + ' stay');
+            placementtypeInnerSpan = document.createElement('span');
+            placementtypeInnerSpan.className = 'offscreen';
+            placementtypeInnerSpan.appendChild(document.createTextNode(type + ' stay'));
+            placementtypeBadge.appendChild(placementtypeInnerSpan);
+            placementtypeBadge.appendChild(document.createTextNode((type === 'short' ? 'SS' : 'LS')));
+            placementtype.appendChild(placementtypeBadge);
+            container.appendChild(placementtype);
+            //return container;
             return bed;
         },
         
         // Add a bed div element with a click handler
-        drawBed: function drawBed(id, name) {
+        drawBed: function drawBed(id, name, providerid) {
             var bed = document.createElement('div');
             bed.id = id;
             bed.className = 'bed';
-                        
+            bed.setAttribute('providerid', providerid);
             // Add bed container hover and click handlers (available day)
             bed.addEventListener('mouseover', this.onHoverVacancy);
             bed.addEventListener('mouseout', this.onOutVacancy);
@@ -305,14 +324,13 @@ spanmonth.appendChild(month);}
         },
         
         // Add an individual booking rectangle to element el
-        drawBooking: function drawBooking(el, ref, status, start, duration, client) {
+        drawBooking: function drawBooking(el, ref, status, start, duration, client, id) {
             var div = document.createElement('div'),
                 content = document.createTextNode((client !== undefined) ? client : ''),
                 date = moment(start, 'DD/MM/YYYY'),
                 offset = this.positionFromDate(start), /* Number of days from start */
                 left = ((offset * 30) < 0) ? 0 : (offset * 30),
                 right = ((left + (duration * 30)) > this.width) ? this.width - 1 : (left + (duration * 30) - 1);
-                // right = (((offset + duration * 30)) > this.width) ? this.width - 1 : ((offset + duration) * 30) - 1;
 
             // Only draw booking if it falls in current timeline range
             if ((date < this.endDate) && (date.add(duration, 'days') > this.startDate)) {
@@ -328,19 +346,18 @@ spanmonth.appendChild(month);}
                 if (start !== undefined) { div.dataset['start'] = start; }
                 if (client !== undefined) { div.dataset['client'] = client; }
                 if (duration !== undefined) { div.dataset['duration'] = duration; }
+                if (id !== undefined) { div.setAttribute('bookingid', id); }
                 div.addEventListener('click', this.onClickBooking);
 
                 div.appendChild(content);
                 el.appendChild(div);
             }
         },
-        
         drawVacancies: function drawVacancies(vacancies) {
             var div = document.createElement('div'),
                 v,
                 beds,
                 i = 0;
-            
             while (i < vacancies.length) {
                 v = document.createElement('div');
                 v.className = 'vacancy' + (vacancies[i] === 0 ? ' vacancy-none' : '');
@@ -350,7 +367,6 @@ spanmonth.appendChild(month);}
             }
             return div;
         },
-        
         // When clicking a row heading, expand or collapse bookings in row
         // The toggle class is "expand" and is applied to the row element
         toggle: function toggle(e) {

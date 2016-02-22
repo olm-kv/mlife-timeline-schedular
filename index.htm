@@ -8,6 +8,11 @@
     <link rel="stylesheet" type="text/css" href="css/cards.css" />
     <link rel="stylesheet" type="text/css" href="css/styles.css" />
     <link rel="stylesheet" type="text/css" href="css/themes.css" />
+    <style>
+        body {
+            margin-top: 120px !important;
+        }
+    </style>
 </head>
 
 <body>
@@ -47,7 +52,7 @@
 
     <!-- Nav buttons -->
     <div class="container">
-        <div class="card-2 green timeline-nav">
+        <div class="card-2 green-timeline timeline-nav">
             <div class="row">
                 <div class="col-md-12 nav-btn">
                     <div class='wrapper'>
@@ -73,9 +78,9 @@
     <!-- End Timeline Grid -->
 
     <!-- Debug -->
-    <div class="container debug">
+    <!--<div class="container debug">
         <pre id="debug"></pre>
-    </div>
+    </div>-->
 
 
     <!-- View Booking Modal -->
@@ -168,7 +173,7 @@
             var resizeTimer;
             $('#code').text(data);
             Timeline.init(bedData, {
-                theme: 'green',
+                theme: 'green-timeline',
                 onClickBooking: viewBooking,
                 onClickVacancy: newBooking
             });

@@ -1,6 +1,5 @@
 body {
     background-color: #eeeded;
-    padding-top: 120px;
 }
 table { 
     margin-bottom: 0 !important;
@@ -65,6 +64,7 @@ td .home:after {
     height: 24px;
 }
 
+
 tr.expand td .home:after,
 tr.expand .label-container:after {
     background: url("../images/ic_expand_less_white_24dp_1x.png") no-repeat top right;
@@ -113,43 +113,72 @@ tr.expand .bed {
 .booking {
     position: absolute;
     text-align: center;
-    min-height: 36px;
     padding: 8px;
     margin-bottom: 1px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow:ellipsis; 
+    height: 36px;
+}
+
+td.row-heading .home:hover, .booking:hover, .bookings-container .bed:hover {
+    cursor: pointer;
 }
 
 .booking.booked {
-    background-color: #DA4453;
+    background-color: #E53935;
     color: white;
 }
 
 .booking.requested {
-    background-color: #F6BB42;
+    background-color: #FFB74D;    
     color: #222;
 }
 
 .booking.in-use {
-    background-color: #434A54;
+    background-color: #424242;
     color: white;
 }
 
 .hover {
-    background-color: #F8DDE0;
+    background-color: #fbe9e7;
     background-image: url(../images/timeline-hover.gif);
 }
 
-.nav-btn {
-    padding: 16px;
+.nav-btn .btn {
+    box-shadow: none;
+    -webkit-transition: 0.1s ease-out;
+    -moz-transition: 0.1s ease-out;
+    -o-transition: 0.1s ease-out;
+    -ms-transition: 0.1s ease-out;
+    transition: 0.1s ease-out;
 }
 .btn-advance,
 .btn-back {
     min-height: 24px;
 }
-.btn-advance {
+
+.btn-advance, .btn-advance:active {
     background: url("../images/ic_keyboard_arrow_right_white_24dp_2x.png") no-repeat center;
+    margin-right: 0;
 }
-.btn-back {
+.btn-advance:hover {
+    background-position: -8px center
+}
+.btn-advance:active {
+    background-position: -5px center
+}
+
+
+.btn-back, .btn-back:active {
     background: url("../images/ic_keyboard_arrow_left_white_24dp_2x.png") no-repeat center;
+    margin-left: 0
+}
+.btn-back:hover {
+    background-position: -13px center
+}
+.btn-back:active {
+    background-position: -16px center
 }
 .centre {
     text-align: center;
@@ -173,7 +202,7 @@ tr.expand .vacancy {
 
 /** kv **/
 
-.label-container:last-child:after ,.green.timeline-nav:after{ /* divider */
+.label-container:last-child:after ,.green-timeline.timeline-nav:after{ /* divider */
     content:'';
     display:block;
     border:none;
@@ -206,18 +235,20 @@ tr.expand .vacancy {
 .timeline-nav .wrapper h2 {
     position: absolute;
     display: inline-block;
-    padding:  0 0em;
-    top: -0.3em;
+    padding:  0;
+    top: 12px;
     left: 0;
     right: 0;
-    margin: 0.2em auto;
-    font-size: 1.4em;
+    margin: 0 auto;
+    font-size: 1.25rem;
      /*  padding: 0.2em 0em 3.5em 0em;*/
 
 }
 
 .timeline-nav .wrapper {
     position: relative;
+    overflow: hidden;
+    padding: 8px
 }
 
 
@@ -238,6 +269,8 @@ tr.expand .vacancy {
 
 .timeline-nav .btn-advance,.timeline-nav .btn-back {
     margin: 0.2em 0;
+    padding: 5px 12px
+
 
 }
 
@@ -246,28 +279,33 @@ tr.expand .vacancy {
 /* Styles */
 }
 
-@media only screen and (min-width: 750px) {
+@media only screen and (min-width: 768px) {
 /* Styles */
 
     .timeline-nav .wrapper h2 {
-        position: absolute;
-        display: inline-block;
-        padding: 0px;
-        left: 0;
-        right: 0;
-        margin: 0.2em auto;
-        font-size: 30px;
-
+        font-size: 1.6rem;
+        top:16px
     }
 
     .timeline-nav .btn-advance, .timeline-nav .btn-advance { /*line-height: 1.4em;*/ }
     .timeline>table {font-size: 1em;}
 
     .timeline-nav .wrapper {
-         /*padding: 1em 0em 3.5em 0em;*/
+         padding: 16px;
          min-height: 30px;
     }
 }
-  
+
+@media only screen and (min-width: 992px) { 
+
+    .timeline-nav .wrapper {
+         padding: 20px 16px;
+
+    }
+
+    .timeline-nav .wrapper h2 {
+        font-size: 1.9rem;
+        top:18px
+    }
 
 }
