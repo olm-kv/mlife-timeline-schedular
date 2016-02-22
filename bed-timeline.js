@@ -88,29 +88,20 @@
         },
 
         advance: function advance(days) {
-            var next;
             if (days === undefined) {
-                // Go to first monday in next month
-                next = this.startDate.endOf('month').add(1, 'day');
-                while (next.day() !== 1) { next.add(1, 'day'); }
-                this.startDate = next;
+                // Go to next date range
+                this.startDate.add(this.numberOfDays, 'days');
             } else {
                 // Advance requested number of days
                 this.startDate.add(days, 'days');
             }
             this.init();
         },
-
+        
         back: function back(days) {
-            var last;
             if (days === undefined) {
-                // Go to first monday in last month
-                last = this.startDate.startOf('month').subtract(1, 'month');
-                while (last.day() !== 1) { last.add(1, 'day'); }
-                // Don't go earlier than today
-                this.startDate = (last < moment().hour(0).minute(0).second(0)) ?
-                    moment().hour(0).minute(0).second(0) :
-                    last;
+                // Go to previous date range
+                this.startDate.add(-this.numberOfDays, 'days');
                 this.init();
             } else {
                 // Go back requested number of days
