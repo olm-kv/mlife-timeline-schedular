@@ -285,28 +285,27 @@
                 bedName = document.createTextNode(bedName);
             bed.dataset['id'] = id;
             container.className = 'bed-label';
-            bed.className = 'bed-name bed-label truncate';
-            bed.appendChild(bedName);
+            bed.className = 'bed-name truncate';
             bed.setAttribute('providerid', providerid);
                         
             // Add bed container hover and click handlers (available day)
             //bed.addEventListener('click', this.onClickVacancy);
-            container.appendChild(bed);
+            //container.appendChild(bed);
 
             var placementtype = document.createElement('div');
+            if (type === undefined) { type = 'long'; }
             placementtype.className = type + '-stay bed-type';
             placementtypeBadge = document.createElement('span');
-            placementtypeBadge.className = 'badge';
+            placementtypeBadge.className = 'bed-badge';
             placementtypeBadge.setAttribute('title', type + ' stay');
-            placementtypeInnerSpan = document.createElement('span');
-            placementtypeInnerSpan.className = 'offscreen';
-            placementtypeInnerSpan.appendChild(document.createTextNode(type + ' stay'));
-            placementtypeBadge.appendChild(placementtypeInnerSpan);
             placementtypeBadge.appendChild(document.createTextNode((type === 'short' ? 'SS' : 'LS')));
             placementtype.appendChild(placementtypeBadge);
-            container.appendChild(placementtype);
-            //return container;
-            return bed;
+
+            bed.appendChild(placementtype);
+            bed.appendChild(bedName);
+            container.appendChild(bed);
+            return container;
+            //return bed;
         },
         
         // Add a bed div element with a click handler
@@ -414,7 +413,7 @@
         },
         
         truncate: function () {
-            var $t = document.getElementsByClassName('truncate'),
+            var $t = document.getElementsByClassName('bed-label'),
                 i;
             for (i = 0; i < $t.length; i++) {
                 $t[i].style.width = this.headingWidth + 'px';

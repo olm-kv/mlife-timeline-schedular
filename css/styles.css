@@ -96,9 +96,35 @@ tr.expand th .home:after {
     display: none;
 }
 
+.bed-type {
+    float: left;
+}
+
+.bed-badge {
+    display: inline;
+    padding: 2px;
+    font-size: 75%;
+    font-weight: 700;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: .25em;
+    border: 1px solid white;
+}
+
+.long-stay .bed-badge {
+    background-color: #424242;
+}
+
+.short-stay .bed-badge {
+    background-color: #E53935;
+}
+
 tr.expand .bed-label {
     display: block;
     padding: 8px;
+    text-indent: 5px;
 }
 
 tr.expand .bed {
