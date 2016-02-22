@@ -17,12 +17,14 @@ table {
 td.row-timeline {
     background-image: url(../images/timeline.gif); 
 }
+
 td.row-heading {
-    width: 20%;
+    width: 30%;
 }
 th.row-timeline-heading, td.row-timeline {
-    width: 80%;
+    width: 70%;
 }
+
 .top-margin-60 {
     margin-top: 60px;
 }
@@ -43,6 +45,7 @@ th.row-timeline-heading, td.row-timeline {
     text-align: center;
     float: left;
     padding: 5px 0;
+    font-size: 1.4em;
 }
 
 .timeline-day {
@@ -54,6 +57,7 @@ th.row-timeline-heading, td.row-timeline {
 .home,
 .home-name {
     padding: 8px;
+    font-size: 1.4em;
 }
 
 td .home:after {
@@ -188,6 +192,7 @@ td.row-heading .home:hover, .booking:hover, .bookings-container .bed:hover {
     text-align: center;
     min-height: 36px;
     padding: 8px;
+    font-size: 1.4em;
 }
 .vacancy-none {
     background-color: #434A54;
@@ -249,9 +254,7 @@ td.row-heading .home:hover, .booking:hover, .bookings-container .bed:hover {
 
 .timeline-nav .btn-advance,.timeline-nav .btn-back {
     margin: 0.2em 0;
-    padding: 5px 12px
-
-
+    padding: 5px 12px;
 }
 
 
@@ -266,8 +269,17 @@ td.row-heading .home:hover, .booking:hover, .bookings-container .bed:hover {
         font-size: 1.6rem;
         top:16px
     }
+    .home,
+    .home-name,
+    .vacancy,
+    .timeline-date {
+        font-size: 1em;
+    }
 
-    .timeline-nav .btn-advance, .timeline-nav .btn-advance { /*line-height: 1.4em;*/ }
+    /*.timeline-nav .btn-advance,
+    .timeline-nav .btn-advance {
+        line-height: 1.4em;
+    }*/
     .timeline>table {font-size: 1em;}
 
     .timeline-nav .wrapper {
@@ -280,12 +292,19 @@ td.row-heading .home:hover, .booking:hover, .bookings-container .bed:hover {
 
     .timeline-nav .wrapper {
          padding: 20px 16px;
-
     }
 
     .timeline-nav .wrapper h2 {
         font-size: 1.9rem;
         top:18px
     }
+    /* Reduce ratio of column heading width */
+    td.row-heading {
+        width: 20%;
+    }
+    
+    th.row-timeline-heading, td.row-timeline {
+        width: 80%;
+    } 
 
 }
