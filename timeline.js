@@ -4,7 +4,7 @@
         bookingData: {},                                                            // Would come from ajax
         colWidth: 30,                                                               // Width of each col in px
         width: 0,                                                                   // Width of timeline col in px
-        dayClassName: 'timeline-date',                                                       // Class name for days divs
+        dayClassName: 'timeline-date',                                              // Class name for days divs
         rowHeadClassName: 'home',                                                   // Class name for row heading
         numberOfDays: 0,                                                            // Number of days in timeline
         startDate: '',                                                              // Start date for timeline
@@ -177,12 +177,15 @@
                                 ;
             div.className = className;
             // First day of month: need darker border
-            if (date.date() === 1) { div.className += ' first'; div.setAttribute('title', m);div.appendChild(spanmonth);spanmonth.className ='month';
-spanmonth.appendChild(month);}
-
+            if (date.date() === 1) {
+                div.className += ' first';
+                div.setAttribute('title', m);
+                div.appendChild(spanmonth);
+                spanmonth.className ='month';
+                spanmonth.appendChild(month);
+            }
             span.className = 'timeline-day';
             span.appendChild(day);
-    
             div.appendChild(span);
             div.appendChild(d);
             el.appendChild(div);
