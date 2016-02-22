@@ -5,7 +5,7 @@ var bedData = {
             beds: [
                 {
                     id: 'b001',
-                    name: 'bed1',
+                    name: 'my exceptionally long bed name will not comfortably fit into a row - bed1',
                     bookings: [
                         {
                             ref: 'b01',

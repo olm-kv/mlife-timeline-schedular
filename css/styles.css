@@ -107,6 +107,12 @@ tr.expand .bed {
     margin-bottom: 1px;
 }
 
+.truncate {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 .bookings-container {
     position: relative;
 }

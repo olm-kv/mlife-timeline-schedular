@@ -4,6 +4,7 @@
         bookingData: {},                                                            // Would come from ajax
         colWidth: 30,                                                               // Width of each col in px
         width: 0,                                                                   // Width of timeline col in px
+        headingWidth: 0,                                                            // Width of heading column
         dayClassName: 'timeline-date',                                              // Class name for days divs
         rowHeadClassName: 'home',                                                   // Class name for row heading
         numberOfDays: 0,                                                            // Number of days in timeline
@@ -84,6 +85,9 @@
                     tr[0].className += ' expand';
                 }
             }
+            
+            // Truncate rows
+            this.truncate();
         },
 
         setOptions: function setOptions(options) {
@@ -143,6 +147,7 @@
             div.addEventListener('click', this.toggle.bind(this));
             
             // Setup header 
+            this.headingWidth = th1.offsetWidth;
             this.width = th2.offsetWidth;
             this.numberOfDays = parseInt(this.width / this.colWidth, 10);
             
@@ -277,10 +282,10 @@
         drawBedLabel: function drawBedLabel(home, id, bedName, providerid, type) {
             var container = document.createElement('div');
             var bed = document.createElement('div'),
-                bedName = document.createTextNode(home + ' - ' + bedName);
+                bedName = document.createTextNode(bedName);
             bed.dataset['id'] = id;
             container.className = 'bed-label';
-            bed.className = 'bed-name bed-label';
+            bed.className = 'bed-name bed-label truncate';
             bed.appendChild(bedName);
             bed.setAttribute('providerid', providerid);
                         
@@ -405,6 +410,14 @@
                 for (i = 0; i < l; i++) {
                     el.removeChild(el.childNodes[0]);
                 }
+            }
+        },
+        
+        truncate: function () {
+            var $t = document.getElementsByClassName('truncate'),
+                i;
+            for (i = 0; i < $t.length; i++) {
+                $t[i].style.width = this.headingWidth + 'px';
             }
         },
 
