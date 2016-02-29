@@ -69,7 +69,7 @@ th.row-timeline-heading, td.row-timeline {
     font-size: 1.4em;
 }
 
-td .home:after {
+/*td .home:after {
     content: "";
     float: right;
     background: url("../images/ic_expand_more_white_24dp_1x.png") no-repeat top right;
@@ -92,7 +92,7 @@ th .home:after {
 
 tr.expand th .home:after {
     background: url("../images/ic_expand_less_white_24dp_1x.png") no-repeat top right;
-}
+}*/
 
 .bed {
     display: none;
@@ -172,7 +172,10 @@ tr.expand .bed {
     font-size: 1.4em;
 }
 
-td.row-heading .home:hover, .booking:hover, .bookings-container .bed:hover {
+td.row-heading .home:hover,
+.booking:hover,
+.bookings-container .bed:hover,
+.row-timeline {
     cursor: pointer;
 }
 

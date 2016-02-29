@@ -270,7 +270,7 @@
             bookings.className = 'row-timeline';
             bookingsContainer.className = 'bookings-container';
             bedLabelContainer.className = 'label-container';
-            div.className = this.rowHeadClassName;
+            div.className = this.rowHeadClassName + ' truncate';
             div.appendChild(home);
             heading.appendChild(div);
             heading.appendChild(bedLabelContainer);
@@ -281,6 +281,7 @@
             
             // Add row heading expand and contract handler
             heading.addEventListener('click', this.toggle.bind(this));
+            bookings.addEventListener('click', this.toggle.bind(this));
             return row;
         },
         
