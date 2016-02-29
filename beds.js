@@ -53,7 +53,7 @@ var bedData = {
             
         },
         {
-            name: 'Ashwood Home',
+            name: 'Elizabeth House Residential Care Home',
             beds: [
                 {
                     id: 'b004',

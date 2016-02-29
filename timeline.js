@@ -424,6 +424,12 @@
             for (i = 0; i < $t.length; i++) {
                 $t[i].style.width = this.headingWidth + 'px';
             }
+            
+            // And Home labels, minus the arrow icon width
+            $t = document.getElementsByClassName('home');
+            for (i = 0; i < $t.length; i++) {
+                $t[i].style.width = this.headingWidth + 'px';
+            }
         },
 
         debug: function (text) {
