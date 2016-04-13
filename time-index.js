@@ -40,7 +40,6 @@ function viewBooking(e) {
     var start = el.dataset !== undefined && el.dataset['start'] != undefined ? el.dataset['start'] : el.getAttribute("start");
 
     var duration = el.dataset !== undefined && el.dataset['duration'] != undefined ? el.dataset['duration'] : el.getAttribute("duration");
-        //$modal;
 
     // Hide all action buttons
     $('.cancel-booking-button').hide();
@@ -48,35 +47,20 @@ function viewBooking(e) {
     // Identify the modal based on status
     switch (status) {
         case 'booked':
-            //$modal = $('#view-booking-modal');
             viewBookingRequest(e);
             return;
             break;
         case 'requested':
-            //$modal = $('#view-booking-modal');
-            //$('.cancel-booking-button').show();
             viewBookingRequest(e);
             return;
             break;
         case 'in-use':
-            $modal = $('#view-booking-modal');
             break;
         case 'available':
-            $modal = $('#new-booking-modal');
             break;
         default:
-            $modal = $('#view-booking-modal');
             break;
     }
-
-    // Update modal with values
-    // We would fetch booking data from API here...
-    $('.booking-ref', $modal).text(ref);
-    $('.client', $modal).text(client);
-    $('.start', $modal).text(start);
-    $('.duration', $modal).text(duration + ' day' + ((duration > 1) ? 's' : ''));
-
-    $('#view-booking-modal').modal();
 }
 
 // Click handler for empty row event
@@ -85,12 +69,6 @@ function newBooking(e) {
     var el = e.target,
         bedId = el.id,
         col = parseInt(e.offsetX / 30, 10),
-        date = moment(Timeline.startDate).add(col, 'days'),
-        $modal;
+        date = moment(Timeline.startDate).add(col, 'days');
         addBookingRequest(e, date.format('DD/MM/YYYY'));
-    //$modal = $('#new-booking-modal');
-    //$('.bed-id', $modal).text(bedId);
-    //$('#start-date', $modal).val(date.format('DD/MM/YYYY'));
-
-    //$modal.modal();
 }

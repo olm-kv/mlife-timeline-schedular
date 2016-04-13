@@ -8,6 +8,8 @@
     <link rel="stylesheet" type="text/css" href="css/cards.css" />
     <link rel="stylesheet" type="text/css" href="css/styles.css" />
     <link rel="stylesheet" type="text/css" href="css/themes.css" />
+    
+    <link rel="stylesheet" type="text/css" href="enjoyhint.css" />
     <style>
         body {
             margin-top: 120px !important;
@@ -34,12 +36,13 @@
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav navbar-right">
+                        <li><a href="#" onclick="showTour()">Help</a></li>
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Theme <span class="caret"></span></a>
                             <ul class="dropdown-menu">
                                 <li><a href="#" onclick="Timeline.init(bedData, {theme: 'default',onClickView: viewBooking,onClickBed: newBooking})">Default</a></li>
-                                <li><a href="#" onclick="Timeline.init(bedData, {theme: 'blue',onClickView: viewBooking,onClickBed: newBooking})">Blue</a></li>
-                                <li><a href="#" onclick="Timeline.init(bedData, {theme: 'green',onClickView: viewBooking,onClickBed: newBooking})">Green</a></li>
+                                <li><a href="#" onclick="Timeline.init(bedData, {theme: 'blue-timeline',onClickView: viewBooking,onClickBed: newBooking})">Blue</a></li>
+                                <li><a href="#" onclick="Timeline.init(bedData, {theme: 'green-timeline',onClickView: viewBooking,onClickBed: newBooking})">Green</a></li>
                             </ul>
                         </li>
                     </ul>
@@ -162,6 +165,9 @@
 
     <script src="node_modules/jquery/dist/jquery.js"></script>
     <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="enjoyhint.min.js"></script>
+    <script src="timeline-feature-tour.js"></script>
+    
     <script src="node_modules/moment/min/moment.min.js"></script>
     <script src="beds.js"></script>
     <script src="timeline.js"></script>

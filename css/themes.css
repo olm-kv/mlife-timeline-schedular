@@ -41,8 +41,14 @@ th.row-timeline-heading.green-timeline {
     background-color: #009688;
     border-bottom: 1px solid #009688;
 }
-.green-timeline.timeline-nav, .green-timeline .nav-btn .btn:focus {
+.green-timeline.timeline-nav, .green-timeline .nav-btn .btn:focus, tr.expand td.row-heading, tr.expand td.row-heading:hover {
     background-color: #009688;
+}
+.timeline.provider tr.expand td.row-heading {
+    background-color: #00897B;
+}
+.green-timeline.row-heading:hover, .timeline.provider tr.expand td.row-heading:hover {
+    background-color: #018f80;
 }
 
 

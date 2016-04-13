@@ -1,6 +1,6 @@
 (function () {
     var BedManager = {
-        titleText: 'Bookings from ',
+        titleText: 'Bed Status from ',
         bookingData: {},                                                            // Would come from ajax
         colWidth: 30,                                                               // Width of each col in px
         width: 0,                                                                   // Width of timeline col in px
@@ -61,15 +61,15 @@
 
             // Set days in table headings
             // Get start date from timeline component.  If empty, use today.
-            var startDateString = (this.startDate != '') ? this.startDate : startValue,// this.$timeline.dataset['start'],
-                startDate = (startDateString != '') ?
+            var startDateString = (this.startDate != '') ? this.startDate : startValue,
+           startDate = (startDateString != '') ?
                     moment(startDateString, 'DD/MM/YYYY') :
                     moment().hour(0).minute(0).second(0);
-            this.startDate = moment(startDate);
+            this.startDate = moment(startDate, 'DD/MM/YYYY');
 
             // Add title text including the start date
             this.$titleText.innerHTML = '';
-            newTitle = this.titleText + ' ' + this.startDate.format('d MMM YYYY');
+            newTitle = this.titleText + ' ' + moment(this.startDate, 'DD/MM/YYYY').format('DD MMM YYYY');
             content = document.createTextNode(newTitle);
             this.$titleText.appendChild(content);
 
@@ -79,7 +79,7 @@
             // Draw bookings
             this.bookingData = data;
             this.drawBookings(this.bookingData);
-            
+
             // Truncate rows
             this.truncate();
         },
@@ -94,18 +94,18 @@
         advance: function advance(days) {
             if (days === undefined) {
                 // Go to next date range
-                this.startDate.add(this.numberOfDays, 'days');
+                this.startDate = this.startDate.add(this.numberOfDays, 'days');
             } else {
                 // Advance requested number of days
-                this.startDate.add(days, 'days');
+                this.startDate = this.startDate.add(days, 'days');
             }
             this.init();
         },
-        
+
         back: function back(days) {
             if (days === undefined) {
                 // Go to previous date range
-                this.startDate.add(-this.numberOfDays, 'days');
+                this.startDate = this.startDate.add(-this.numberOfDays, 'days');
                 this.init();
             } else {
                 // Go back requested number of days
@@ -231,14 +231,14 @@
             placementtype.className = type + '-stay bed-type';
             placementtypeBadge = document.createElement('span');
             placementtypeBadge.className = 'bed-badge';
-            placementtypeBadge.setAttribute('title', type + ' stay');
+            placementtypeBadge.setAttribute('title', titleCase(type) + ' stay');
             placementtypeBadge.appendChild(document.createTextNode((type === 'short' ? 'S' : 'L')));
 
             placementtype.appendChild(placementtypeBadge);
             div.appendChild(placementtype);
             div.appendChild(home);
-            bedLabelContainer.appendChild(div);            
-            
+            bedLabelContainer.appendChild(div);
+
             heading.appendChild(bedLabelContainer);
             row.appendChild(heading);
             row.appendChild(bookings);
@@ -268,11 +268,18 @@
                 content = document.createTextNode((client !== undefined) ? client : ''),
                 date = moment(start, 'DD/MM/YYYY'),
                 offset = this.positionFromDate(start), /* Number of days from start */
-                left = ((offset * 30) < 0) ? 0 : (offset * 30),
-                right = ((left + (duration * 30)) > this.width) ? this.width - 1 : (left + (duration * 30) - 1);
+                left = ((offset * 30) < 0) ? 0 : (offset * 30);
+            if (offset < 0)
+                duration = Math.round(duration + offset); // offset is subtracted from duration
+
+            var right = ((left + (duration * 30)) > this.width) ? this.width - 1 : (left + (duration * 30) - 1);
+            var clonedStartDate = this.startDate.clone();
 
             // Only draw booking if it falls in current timeline range
-            if ((date < this.endDate) && (date.add(duration, 'days') > this.startDate)) {
+            var displayStartDate = (date < clonedStartDate ? clonedStartDate : date);
+            var clonedDisplayStartDate = displayStartDate.clone();
+            var displayEndDate = clonedDisplayStartDate.add(duration, 'days');
+            if ((displayStartDate < this.endDate) && (displayEndDate > this.startDate)) {
                 // Styles
                 div.className = 'booking ' + ((status !== undefined) ? status : '');
                 div.id = ref;
@@ -317,7 +324,7 @@
                 }
             }
         },
-        
+
         truncate: function () {
             var $t = document.getElementsByClassName('bed-container'),
                 i;

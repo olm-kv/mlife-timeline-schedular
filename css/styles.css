@@ -1,9 +1,7 @@
-body {
-    background-color: #eeeded;
-}
 table { 
     margin-bottom: 0 !important;
 }
+
 .timeline>table {
     border: 0 !important;
 }
@@ -14,6 +12,16 @@ table {
 .timeline th, .timeline td {
     padding: 0 !important;
 }
+
+.timeline-header h3 {
+    font-size: 2rem;
+    margin-top: 0
+}  
+
+.timeline-header-button {
+    margin-top: -1rem
+} 
+
 td.row-timeline {
     background-image: url(../images/timeline.gif); 
 }
@@ -23,6 +31,24 @@ td.row-heading {
 }
 th.row-timeline-heading, td.row-timeline {
     width: 70%;
+}
+
+td.row-heading {
+	background-position: 98% 6px;	
+	background-repeat: no-repeat;
+}	
+
+td.row-heading:hover, .timeline.provider tr.expand td.row-heading:hover {
+	background-image: url(../images/ic_expand_more_white_24dp_1x.png); 
+	cursor: pointer;
+}
+
+tr.expand td.row-heading {
+	background-image: url(../images/ic_expand_less_white_24dp_1x.png); 
+}
+
+.timeline.provider td.row-heading:hover, .timeline.provider tr.expand td.row-heading, .timeline.provider tr.expand td.row-heading:hover {
+	background-image: none;
 }
 
 .timeline.provider td .home:after,.timeline.provider th .home:after {
@@ -61,6 +87,8 @@ th.row-timeline-heading, td.row-timeline {
     display: block;
     font-variant: small-caps;
 }
+
+
 
 .home,
 .home-name,
@@ -115,23 +143,25 @@ tr.expand th .home:after {
 
 .bed-badge {
     display: inline;
-    padding: 2px 4px;
-    font-size: 75%;
+    padding: 0 4px;
+    font-size: 87%;
     font-weight: 700;
-    color: #fff;
     text-align: center;
     white-space: nowrap;
     vertical-align: baseline;
     border-radius: .25em;
-    border: 1px solid white;
+
 }
 
 .long-stay .bed-badge {
-    background-color: #424242;
+    background-color: #e0f2f1;
+    color:#004d40;
+  
 }
 
 .short-stay .bed-badge {
-    background-color: #E53935;
+    background-color: #00695c;
+    color: #e0f2f1;
 }
 
 tr.expand .bed-label{
@@ -141,7 +171,11 @@ tr.expand .bed-label{
 
 tr.expand .bed-label,
 .bed-container {
-    text-indent: 5px;
+    text-indent: 7px;
+}
+
+tr.expand .home {
+	font-weight: 500;
 }
 
 tr.expand .bed {
@@ -172,11 +206,12 @@ tr.expand .bed {
     font-size: 1.4em;
 }
 
-td.row-heading .home:hover,
-.booking:hover,
-.bookings-container .bed:hover,
-.row-timeline {
+td.row-heading .home:hover, .booking:hover, .bookings-container .bed:hover, .row-timeline {
     cursor: pointer;
+}
+
+td.row-timeline {
+    vertical-align: inherit !important;
 }
 
 .bookings-container .bed .in-use:hover {
@@ -252,9 +287,28 @@ td.row-heading .home:hover,
     font-size: 1.4em;
 }
 .vacancy-none {
-    background-color: #434A54;
+    background-color: #424242;
     color: white;
 }
+
+.vacancy:hover {
+	background-color: #eee;
+}
+
+.vacancy.vacancy-none:hover {
+	background-color:#424242;
+}
+
+.booking.requested:hover {
+	background-color: #ffa21a
+}
+
+.booking.booked:hover {
+	background-color: #cd1e1a;
+}
+
+
+
 
 /** kv **/
 /* month marker */
@@ -290,22 +344,21 @@ td.row-heading .home:hover,
 .timeline-nav .wrapper {
     position: relative;
     overflow: hidden;
-    padding: 8px
+    padding: 8px 8px 18px;
 }
 
 
 .timeline-nav .btn-back{
     float:left;
     position: relative;
-     z-index: 500;
-     line-height: 0.5em;
-
+    z-index: 100;
+    line-height: 0.5em;
 }
 
 .timeline-nav .btn-advance {
    float:right; 
    position: relative;
-   z-index: 500;
+   z-index: 100;
    line-height: 0.5em;
 }
 
@@ -343,15 +396,19 @@ td.row-heading .home:hover,
     .timeline>table {font-size: 1em;}
 
     .timeline-nav .wrapper {
-         padding: 16px;
+         padding: 16px 16px 22px;
          min-height: 30px;
     }
 }
 
 @media only screen and (min-width: 992px) { 
 
+    .timeline-header-button {
+        text-align: right;
+    } 
+
     .timeline-nav .wrapper {
-         padding: 20px 16px;
+         padding: 20px 20px 28px;
     }
 
     .timeline-nav .wrapper h2 {

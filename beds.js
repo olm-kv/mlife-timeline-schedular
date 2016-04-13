@@ -5,7 +5,7 @@ var bedData = {
             beds: [
                 {
                     id: 'b001',
-                    name: 'my exceptionally long bed name will not comfortably fit into a row - bed1',
+                    name: 'bed1',
                     bookings: [
                         {
                             ref: 'b01',
@@ -39,21 +39,13 @@ var bedData = {
                 {
                     id: 'b003',
                     name: 'bed3',
-                    bookings: [
-                        {
-                            ref: 'b05',
-                            status: 'requested',
-                            client: 'Sarah Payne',
-                            start: '26/02/2016',
-                            duration: 7
-                        }
-                    ]
+                    bookings: []
                 }
             ]
             
         },
         {
-            name: 'Elizabeth House Residential Care Home',
+            name: 'Ashwood Home',
             beds: [
                 {
                     id: 'b004',
