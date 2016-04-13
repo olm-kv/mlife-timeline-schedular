@@ -300,7 +300,7 @@
             placementtype.className = type + '-stay bed-type';
             placementtypeBadge = document.createElement('span');
             placementtypeBadge.className = 'bed-badge';
-            placementtypeBadge.setAttribute('title', titleCase(type) + ' stay');
+            placementtypeBadge.setAttribute('title', this.titleCase(type) + ' stay');
             placementtypeBadge.appendChild(document.createTextNode((type === 'short' ? 'S' : 'L')));
             placementtype.appendChild(placementtypeBadge);
 
@@ -435,6 +435,16 @@
             for (i = 0; i < $t.length; i++) {
                 $t[i].style.width = this.headingWidth + 'px';
             }
+        },
+        
+        titleCase: function(str) {
+            var newstr = str.split(" ");
+            for (i = 0; i < newstr.length; i++) {
+                var copy = newstr[i].substring(1).toLowerCase();
+                newstr[i] = newstr[i][0].toUpperCase() + copy;
+            }
+            newstr = newstr.join(" ");
+            return newstr;
         },
 
         debug: function (text) {
