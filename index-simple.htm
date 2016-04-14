@@ -1,0 +1,291 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Timeline test</title>
+    <link rel="stylesheet" type="text/css" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/cards.css">
+    <link rel="stylesheet" type="text/css" href="css/styles-fixed.css">
+    <link rel="stylesheet" type="text/css" href="css/themes.css">
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container-fluid">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
+                    aria-expanded="false">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#">Booking Timeline</a>
+                </div>
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="#" onclick="showTour()">Help</a></li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Theme <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#" onclick="Timeline.init(bedData, {theme: 'default',onClickView: viewBooking,onClickBed: newBooking})">Default</a></li>
+                                <li><a href="#" onclick="Timeline.init(bedData, {theme: 'blue-timeline',onClickView: viewBooking,onClickBed: newBooking})">Blue</a></li>
+                                <li><a href="#" onclick="Timeline.init(bedData, {theme: 'green-timeline',onClickView: viewBooking,onClickBed: newBooking})">Green</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <!-- /.navbar-collapse -->
+            </div>
+            <!-- /.container-fluid -->
+        </nav>
+    </header>
+
+    <div class="timeline-widget">
+        <div class="container container-fixed container-top-hide"></div>
+        
+        <!-- Nav buttons -->
+        <div class="container container-fixed container-nav">
+            <div class=" timeline green-timeline timeline-nav">
+                <div class="row">
+                    <div class="col-md-12 nav-btn">
+                        <div class="wrapper">
+                            <button class="btn btn-advance" onclick="Timeline.advance()">&nbsp;</button>
+                            <button class="btn btn-back" onclick="Timeline.back()">&nbsp;</button>
+                            <h2 id="timeline-title-text" class="white centre">Bed Status from  13 Apr 2016</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Timeline Grid -->
+        <div class="container container-fixed container-grid">
+            <div class="timeline green-timeline" id="timeline" data-start="">
+                <table class="table">
+                    <thead id="timeline-header">
+                        <tr>
+                            <th class="row-heading green-timeline">
+                                <div class="home-name">Care Home</div>
+                            </th>
+                            <th class="row-timeline-heading green-timeline">
+                                <div class="timeline-date"><span class="timeline-day">Wed</span>13</div>
+                                <div class="timeline-date"><span class="timeline-day">Thu</span>14</div>
+                                <div class="timeline-date"><span class="timeline-day">Fri</span>15</div>
+                                <div class="timeline-date"><span class="timeline-day">Sat</span>16</div>
+                                <div class="timeline-date"><span class="timeline-day">Sun</span>17</div>
+                                <div class="timeline-date"><span class="timeline-day">Mon</span>18</div>
+                                <div class="timeline-date"><span class="timeline-day">Tue</span>19</div>
+                                <div class="timeline-date"><span class="timeline-day">Wed</span>20</div>
+                                <div class="timeline-date"><span class="timeline-day">Thu</span>21</div>
+                                <div class="timeline-date"><span class="timeline-day">Fri</span>22</div>
+                                <div class="timeline-date"><span class="timeline-day">Sat</span>23</div>
+                                <div class="timeline-date"><span class="timeline-day">Sun</span>24</div>
+                                <div class="timeline-date"><span class="timeline-day">Mon</span>25</div>
+                                <div class="timeline-date"><span class="timeline-day">Tue</span>26</div>
+                                <div class="timeline-date"><span class="timeline-day">Wed</span>27</div>
+                                <div class="timeline-date"><span class="timeline-day">Thu</span>28</div>
+                                <div class="timeline-date"><span class="timeline-day">Fri</span>29</div>
+                                <div class="timeline-date"><span class="timeline-day">Sat</span>30</div>
+                                <div class="timeline-date first" title="May"><span class="month">May</span><span class="timeline-day">Sun</span>1</div>
+                                <div class="timeline-date"><span class="timeline-day">Mon</span>2</div>
+                                <div class="timeline-date"><span class="timeline-day">Tue</span>3</div>
+                                <div class="timeline-date"><span class="timeline-day">Wed</span>4</div>
+                                <div class="timeline-date"><span class="timeline-day">Thu</span>5</div>
+                                <div class="timeline-date"><span class="timeline-day">Fri</span>6</div>
+                                <div class="timeline-date"><span class="timeline-day">Sat</span>7</div>
+                                <div class="timeline-date"><span class="timeline-day">Sun</span>8</div>
+                                <div class="timeline-date"><span class="timeline-day">Mon</span>9</div>
+                                <div class="timeline-date"><span class="timeline-day">Tue</span>10</div>
+                                <div class="timeline-date"><span class="timeline-day">Wed</span>11</div>
+                                <div class="timeline-date"><span class="timeline-day">Thu</span>12</div>
+                            </th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+        <div class="container container-details">
+            <div class=" timeline green-timeline" id="timeline-body" data-start="">
+                <table class="table">  
+                    <tbody id="timeline-table">
+                        <tr data-pos="0">
+                            <td class="row-heading green-timeline">
+                                head0
+                            </td>
+                            <td class="row-timeline">
+                                stuff
+                            </td>
+                        </tr>
+                        <tr data-pos="1">
+                            <td class="row-heading green-timeline">
+                                head1
+                            </td>
+                            <td class="row-timeline">
+                                stuff
+                            </td>
+                        </tr>
+                        <tr data-pos="2">
+                            <td class="row-heading green-timeline">head2</td>
+                            <td class="row-timeline">stuff</td>
+                        </tr>
+                        <tr data-pos="2">
+                            <td class="row-heading green-timeline">head2</td>
+                            <td class="row-timeline">stuff</td>
+                        </tr>
+                        <tr data-pos="2">
+                            <td class="row-heading green-timeline">head2</td>
+                            <td class="row-timeline">stuff</td>
+                        </tr>
+                        <tr data-pos="2">
+                            <td class="row-heading green-timeline">head2</td>
+                            <td class="row-timeline">stuff</td>
+                        </tr>
+                        <tr data-pos="2">
+                            <td class="row-heading green-timeline">head2</td>
+                            <td class="row-timeline">stuff</td>
+                        </tr>
+                        <tr data-pos="2">
+                            <td class="row-heading green-timeline">head2</td>
+                            <td class="row-timeline">stuff</td>
+                        </tr>
+                        <tr data-pos="2">
+                            <td class="row-heading green-timeline">head2</td>
+                            <td class="row-timeline">stuff</td>
+                        </tr>
+                        <tr data-pos="2">
+                            <td class="row-heading green-timeline">head2</td>
+                            <td class="row-timeline">stuff</td>
+                        </tr>
+                        <tr data-pos="2">
+                            <td class="row-heading green-timeline">head2</td>
+                            <td class="row-timeline">stuff</td>
+                        </tr>
+                        <tr data-pos="2">
+                            <td class="row-heading green-timeline">head2</td>
+                            <td class="row-timeline">stuff</td>
+                        </tr>
+                        <tr data-pos="2">
+                            <td class="row-heading green-timeline">head2</td>
+                            <td class="row-timeline">stuff</td>
+                        </tr>
+                        <tr data-pos="2">
+                            <td class="row-heading green-timeline">head2</td>
+                            <td class="row-timeline">stuff</td>
+                        </tr>
+                        <tr data-pos="2">
+                            <td class="row-heading green-timeline">head2</td>
+                            <td class="row-timeline">stuff</td>
+                        </tr>
+                        <tr data-pos="2">
+                            <td class="row-heading green-timeline">head2</td>
+                            <td class="row-timeline">stuff</td>
+                        </tr>
+                        <tr data-pos="2">
+                            <td class="row-heading green-timeline">head2</td>
+                            <td class="row-timeline">stuff</td>
+                        </tr>
+                        <tr data-pos="2">
+                            <td class="row-heading green-timeline">head2</td>
+                            <td class="row-timeline">stuff</td>
+                        </tr>
+                        <tr data-pos="2">
+                            <td class="row-heading green-timeline">head2</td>
+                            <td class="row-timeline">stuff</td>
+                        </tr>
+                        <tr data-pos="2">
+                            <td class="row-heading green-timeline">head2</td>
+                            <td class="row-timeline">stuff</td>
+                        </tr>
+                        <tr data-pos="2">
+                            <td class="row-heading green-timeline">head2</td>
+                            <td class="row-timeline">stuff</td>
+                        </tr>
+                        <tr data-pos="2">
+                            <td class="row-heading green-timeline">head2</td>
+                            <td class="row-timeline">stuff</td>
+                        </tr>
+                        <tr data-pos="2">
+                            <td class="row-heading green-timeline">head2</td>
+                            <td class="row-timeline">stuff</td>
+                        </tr>
+                        <tr data-pos="2">
+                            <td class="row-heading green-timeline">head2</td>
+                            <td class="row-timeline">stuff</td>
+                        </tr>
+                        <tr data-pos="2">
+                            <td class="row-heading green-timeline">head2</td>
+                            <td class="row-timeline">stuff</td>
+                        </tr>
+                        <tr data-pos="2">
+                            <td class="row-heading green-timeline">head2</td>
+                            <td class="row-timeline">stuff</td>
+                        </tr>
+                        <tr data-pos="2">
+                            <td class="row-heading green-timeline">head2</td>
+                            <td class="row-timeline">stuff</td>
+                        </tr>
+                        <tr data-pos="2">
+                            <td class="row-heading green-timeline">head2</td>
+                            <td class="row-timeline">stuff</td>
+                        </tr>
+                        <tr data-pos="2">
+                            <td class="row-heading green-timeline">head2</td>
+                            <td class="row-timeline">stuff</td>
+                        </tr>
+                        <tr data-pos="2">
+                            <td class="row-heading green-timeline">head2</td>
+                            <td class="row-timeline">stuff</td>
+                        </tr>
+                        <tr data-pos="2">
+                            <td class="row-heading green-timeline">head2</td>
+                            <td class="row-timeline">stuff</td>
+                        </tr>
+                        <tr data-pos="2">
+                            <td class="row-heading green-timeline">head2</td>
+                            <td class="row-timeline">stuff</td>
+                        </tr>
+                        <tr data-pos="2">
+                            <td class="row-heading green-timeline">head2</td>
+                            <td class="row-timeline">stuff</td>
+                        </tr>
+                        <tr data-pos="2">
+                            <td class="row-heading green-timeline">head2</td>
+                            <td class="row-timeline">stuff</td>
+                        </tr>
+                        <tr data-pos="2">
+                            <td class="row-heading green-timeline">head2</td>
+                            <td class="row-timeline">stuff</td>
+                        </tr>
+                        <tr data-pos="2">
+                            <td class="row-heading green-timeline">head2</td>
+                            <td class="row-timeline">stuff</td>
+                        </tr>
+                        <tr data-pos="2">
+                            <td class="row-heading green-timeline">head2</td>
+                            <td class="row-timeline">stuff</td>
+                        </tr>
+                        <tr data-pos="2">
+                            <td class="row-heading green-timeline">head2</td>
+                            <td class="row-timeline">stuff</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div><!-- End Timeline Widget -->
+
+    <script src="node_modules/jquery/dist/jquery.js"></script>
+    <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+
+    <script src="node_modules/moment/min/moment.min.js"></script>
+    <script src="beds.js"></script>
+    <script src="timeline.js"></script>
+
+</body>
+
+</html>

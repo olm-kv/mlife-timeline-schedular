@@ -50,7 +50,15 @@ var bedData = {
                 {
                     id: 'b004',
                     name: 'bed1',
-                    bookings: []
+                    "bookings": [
+                        {
+                            "ref": "b07",
+                            "status": "requested",
+                            "client": "Phil Lard",
+                            "start": "26/04/2016",
+                            "duration": 14
+                        }
+                    ]
                 }
             ]
         },
@@ -70,6 +78,162 @@ var bedData = {
                 {
                     id: 'b007',
                     name: 'bed2',
+                    bookings: []
+                }
+            ]
+        },
+        {
+            name: 'Bovril House',
+            beds: [
+                {
+                    id: 'b008',
+                    name: 'bed1',
+                    bookings: []
+                },
+                {
+                    id: 'b009',
+                    name: 'bed2',
+                    bookings: []
+                },
+                {
+                    id: 'b010',
+                    name: 'bed3',
+                    bookings: []
+                }
+            ]
+        },
+        {
+            name: 'Towie House',
+            beds: [
+                {
+                    id: 'b008',
+                    name: 'bed1',
+                    bookings: []
+                },
+                {
+                    id: 'b009',
+                    name: 'bed2',
+                    bookings: []
+                },
+                {
+                    id: 'b010',
+                    name: 'bed3',
+                    bookings: []
+                }
+            ]
+        },
+        {
+            name: 'Tonsil House',
+            beds: [
+                {
+                    id: 'b008',
+                    name: 'bed1',
+                    bookings: []
+                },
+                {
+                    id: 'b009',
+                    name: 'bed2',
+                    bookings: []
+                },
+                {
+                    id: 'b010',
+                    name: 'bed3',
+                    bookings: []
+                }
+            ]
+        },
+        {
+            name: 'Flump House',
+            beds: [
+                {
+                    id: 'b008',
+                    name: 'bed1',
+                    bookings: []
+                },
+                {
+                    id: 'b009',
+                    name: 'bed2',
+                    "bookings": [
+                        {
+                            "ref": "b04",
+                            "status": "booked",
+                            "client": "Tom Thumb",
+                            "start": "20/04/2016",
+                            "duration": 7
+                        }
+                    ]
+                },
+                {
+                    id: 'b010',
+                    name: 'bed3',
+                    bookings: []
+                }
+            ]
+        },
+        {
+            name: 'Frippery House',
+            beds: [
+                {
+                    id: 'b008',
+                    name: 'bed1',
+                    bookings: []
+                },
+                {
+                    id: 'b009',
+                    name: 'bed2',
+                    "bookings": [
+                        {
+                            "ref": "b07",
+                            "status": "requested",
+                            "client": "Fia Moose",
+                            "start": "27/04/2016",
+                            "duration": 14
+                        }
+                    ]
+                },
+                {
+                    id: 'b010',
+                    name: 'bed3',
+                    bookings: []
+                }
+            ]
+        },
+        {
+            name: 'The Firs',
+            beds: [
+                {
+                    id: 'b008',
+                    name: 'bed1',
+                    bookings: []
+                },
+                {
+                    id: 'b009',
+                    name: 'bed2',
+                    bookings: []
+                },
+                {
+                    id: 'b010',
+                    name: 'bed3',
+                    bookings: []
+                }
+            ]
+        },
+        {
+            name: 'Spank House',
+            beds: [
+                {
+                    id: 'b008',
+                    name: 'bed1',
+                    bookings: []
+                },
+                {
+                    id: 'b009',
+                    name: 'bed2',
+                    bookings: []
+                },
+                {
+                    id: 'b010',
+                    name: 'bed3',
                     bookings: []
                 }
             ]

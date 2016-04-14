@@ -50,6 +50,9 @@ th.row-timeline-heading.green-timeline {
 .green-timeline.row-heading:hover, .timeline.provider tr.expand td.row-heading:hover {
     background-color: #018f80;
 }
+.timeline {
+    border: 1px solid #009688 !important;
+}
 
 
 /* Blue */

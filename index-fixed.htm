@@ -6,9 +6,9 @@
     <title>Timeline test</title>
     <link rel="stylesheet" type="text/css" href="node_modules/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" href="css/cards.css" />
-    <link rel="stylesheet" type="text/css" href="css/styles.css" />
+    <link rel="stylesheet" type="text/css" href="css/styles-fixed.css" />
     <link rel="stylesheet" type="text/css" href="css/themes.css" />
-    
+
     <link rel="stylesheet" type="text/css" href="enjoyhint.css" />
     <style>
         body {
@@ -24,7 +24,7 @@
                 <!-- Brand and toggle get grouped for better mobile display -->
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
-                    aria-expanded="false">
+                        aria-expanded="false">
                         <span class="sr-only">Toggle navigation</span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
@@ -53,32 +53,41 @@
         </nav>
     </header>
 
-    <!-- Nav buttons -->
-    <div class="container">
-        <div class="card-2 green-timeline timeline-nav">
-            <div class="row">
-                <div class="col-md-12 nav-btn">
-                    <div class='wrapper'>
-                            <button class="btn btn-advance" onclick="Timeline.advance()" >&nbsp;</button>
+    <div class="timeline-widget">
+        <div class="container container-fixed container-top-hide"></div>
+
+        <!-- Timeline Header -->
+        <div class="container container-fixed container-nav">
+            <div class="timeline green-timeline timeline-nav">
+                <div class="row">
+                    <div class="col-md-12 nav-btn">
+                        <div class='wrapper'>
+                            <button class="btn btn-advance" onclick="Timeline.advance()">&nbsp;</button>
                             <button class="btn btn-back" onclick="Timeline.back()">&nbsp;</button>
-                            <h2 id="timeline-title-text" class="white centre" ></h2>
+                            <h2 id="timeline-title-text" class="white centre"></h2>
                         </div>
                     </div>
+                </div>
+            </div>
+            <!-- Timeline Days Header -->
+            <div class="timeline green-timeline" id="timeline" data-start="">
+                <table class="table">
+                    <thead id="timeline-header"></thead>
+                </table>
+            </div>
+            <!-- End Timeline Days Header -->
+        </div>
+        <!-- End Timeline Header -->
+
+        <!-- Homes and Beds Section -->
+        <div class="container container-details">
+            <div class="timeline green-timeline">
+                <table class="table" id="timeline-table"></table>
             </div>
         </div>
+        <!-- End Homes and Beds Section -->
     </div>
-
-    <!-- Timeline Grid -->
-    <div class="container">
-        <div class="timeline card-2" id="timeline" data-start="">
-            <table class="table">
-                <thead id="timeline-header"></thead>
-                <tbody id="timeline-table">
-                    <tbody>
-            </table>
-        </div>
-    </div>
-    <!-- End Timeline Grid -->
+    <!-- End Timeline Widget -->
 
 
     <!-- View Booking Modal -->
@@ -151,10 +160,10 @@
 
 
     <!-- Data Console -->
-    <div class="container top-margin-60">
+    <!--<div class="container top-margin-60">
         <textarea class="code-container" id="code" rows="20"></textarea>
         <button class="btn btn-primary" type="button" onclick="update()">Update</button>
-    </div>
+    </div>-->
     <!-- End Data Console -->
 
 
@@ -162,7 +171,7 @@
     <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="enjoyhint.min.js"></script>
     <script src="timeline-feature-tour.js"></script>
-    
+
     <script src="node_modules/moment/min/moment.min.js"></script>
     <script src="beds.js"></script>
     <script src="timeline.js"></script>
@@ -179,22 +188,13 @@
                 onClickVacancy: newBooking
             });
             // Reddraw timeline after resize
-            $(window).on('resize', function(e) {
-
+            $(window).resize(function() {
               clearTimeout(resizeTimer);
               resizeTimer = setTimeout(function() {
-                update();
-                        
+                Timeline.init(bedData);
               }, 150);
-
             });
         });
-        
-        // Update data in timeline -- Test harness
-        function update() {
-            bedData = JSON.parse($('#code').val());
-            Timeline.init(bedData);
-        }
         
         // Example custom function for view click handler
         function viewBooking(e) {

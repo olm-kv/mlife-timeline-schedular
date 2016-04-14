@@ -58,7 +58,6 @@
             // Destroy current instance
             this.destroy();
 
-            // Set days in table headings
             // Get start date from timeline component.  If empty, use today.
             var startDateString = (this.startDate != '') ? this.startDate : this.$timeline.dataset['start'],
                 startDate = (startDateString != '') ?
@@ -71,6 +70,7 @@
             newTitle = this.titleText + ' ' + moment(this.startDate, 'DD/MM/YYYY').format('DD MMM YYYY');
             content = document.createTextNode(newTitle);
             this.$titleText.appendChild(content);
+            
             // Draw header
             this.drawHeader(startDate);
 
@@ -150,6 +150,7 @@
             this.headingWidth = th1.offsetWidth;
             this.width = th2.offsetWidth;
             this.numberOfDays = parseInt(this.width / this.colWidth, 10);
+            console.log(this.width, this.headingWidth)
 
             // Draw days into header
             for (d = 0; d < this.numberOfDays; d++) {
@@ -172,7 +173,10 @@
             div.className = className;
             // First day of month: need darker border
             if (date.date() === 1) {
-                div.className += ' first'; div.setAttribute('title', m); div.appendChild(spanmonth); spanmonth.className = 'month';
+                div.className += ' first';
+                div.setAttribute('title', m);
+                div.appendChild(spanmonth);
+                spanmonth.className = 'month';
                 spanmonth.appendChild(month);
             }
             span.className = 'timeline-day';
@@ -291,10 +295,6 @@
             bed.className = 'bed-name truncate';
             bed.setAttribute('providerid', providerid);
 
-            // Add bed container hover and click handlers (available day)
-            //bed.addEventListener('click', this.onClickVacancy);
-            //container.appendChild(bed);
-
             var placementtype = document.createElement('div');
             if (type === undefined) { type = 'long'; }
             placementtype.className = type + '-stay bed-type';
@@ -308,7 +308,6 @@
             bed.appendChild(bedName);
             container.appendChild(bed);
             return container;
-            //return bed;
         },
 
         // Add a bed div element with a click handler
@@ -331,7 +330,6 @@
                 date = moment(start, 'DD/MM/YYYY'),
                 offset = this.positionFromDate(start), /* Number of days from start */
                 left = ((offset * 30) < 0) ? 0 : (offset * 30);
-               // right = ((left + (duration * 30)) > this.width) ? this.width - 1 : (left + (duration * 30) - 1);
             if (offset < 0)
                 duration = Math.round(duration + offset); // offset is subtracted from duration
 
@@ -342,8 +340,6 @@
             var displayStartDate = (date < clonedStartDate ? clonedStartDate : date);
             var clonedDisplayStartDate = displayStartDate.clone();
             var displayEndDate = clonedDisplayStartDate.add(duration, 'days');
-
-            // Only draw booking if it falls in current timeline range
             if ((displayStartDate < this.endDate) && (displayEndDate > this.startDate)) {
                 // Styles
                 div.className = 'booking ' + ((status !== undefined) ? status : '');
@@ -364,6 +360,7 @@
                 el.appendChild(div);
             }
         },
+        
         drawVacancies: function drawVacancies(vacancies) {
             var div = document.createElement('div'),
                 v,
@@ -378,6 +375,7 @@
             }
             return div;
         },
+        
         // When clicking a row heading, expand or collapse bookings in row
         // The toggle class is "expand" and is applied to the row element
         toggle: function toggle(e) {

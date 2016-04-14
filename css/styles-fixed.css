@@ -1,0 +1,467 @@
+/* Fixed dimensions to enable fixed header */
+/* Needs media queries as fonts and heights change */
+/*.timeline-widget {
+    position: relative;
+}*/
+.container-fixed {
+    position: fixed;
+    margin: 5% auto; 
+    left: 0;
+    right: 0;
+    z-index: 999;
+}
+.container-top-hide {
+    height: 122px;
+    top: 0px;
+    margin: 0 auto 0 auto;
+    background-color: white;    /* needs to be same as page */
+}
+.container-nav {
+    height: 78px;
+    top:0px;
+    margin-top: 120px;
+}
+.container-details {
+    margin: 222px auto 0 auto; 
+}
+.container-fixed,
+.container-details {
+    width: 640px;
+}
+
+@media only screen and (min-width: 768px) {
+    .container-details {
+        margin: 232px auto 0 auto; 
+    }
+    .container-fixed,
+    .container-details {
+        width: 768px;
+    }
+}
+@media only screen and (min-width: 992px) { 
+    .container-details {
+        margin: 244px auto 0 auto; 
+    }
+    .container-fixed,
+    .container-details {
+        width: 992px;
+    }
+}
+.container-grid{
+    margin: 120px auto 0 auto;
+}
+@media only screen and (min-width: 1280px) { 
+    .container-fixed,
+    .container-details {
+        width: 1280px;
+    }
+}
+.container-grid{
+    margin: 120px auto 0 auto;
+}
+
+/* End Fixed dimensions to enable fixed header */
+
+table { 
+    margin-bottom: 0 !important;
+}
+
+.timeline>table {
+    border: 0 !important;
+}
+    
+.timeline th {
+    margin: 0;
+}
+.timeline th, .timeline td {
+    padding: 0 !important;
+}
+
+.timeline-header h3 {
+    font-size: 2rem;
+    margin-top: 0
+}  
+
+.timeline-header-button {
+    margin-top: -1rem
+} 
+
+td.row-timeline {
+    background-image: url(../images/timeline.gif); 
+}
+
+td.row-heading {
+    width: 30%;
+    height: 30px !important;    /*remove*/
+}
+th.row-timeline-heading, td.row-timeline {
+    width: 70%;
+}
+
+td.row-heading {
+	background-position: 98% 6px;	
+	background-repeat: no-repeat;
+}	
+
+td.row-heading:hover, .timeline.provider tr.expand td.row-heading:hover {
+	background-image: url(../images/ic_expand_more_white_24dp_1x.png); 
+	cursor: pointer;
+}
+
+tr.expand td.row-heading {
+	background-image: url(../images/ic_expand_less_white_24dp_1x.png); 
+}
+
+.timeline.provider td.row-heading:hover, .timeline.provider tr.expand td.row-heading, .timeline.provider tr.expand td.row-heading:hover {
+	background-image: none;
+}
+
+.timeline.provider td .home:after,.timeline.provider th .home:after {
+    display: none;
+}
+
+.timeline.provider .bed {
+    display: block;
+}
+
+.top-margin-60 {
+    margin-top: 60px;
+}
+.code-container {
+    max-height: 400px;
+    width: 100%;
+    padding: 15px;
+    font-family: 'Consolas';
+    overflow-y: scroll;
+}
+
+.align-right {
+    text-align: right;
+}
+
+.timeline-date {
+    width: 30px;
+    text-align: center;
+    float: left;
+    padding: 5px 0;
+    font-size: 1.4em;
+}
+
+.timeline-day {
+    font-size: 0.8em;
+    display: block;
+    font-variant: small-caps;
+}
+
+
+
+.home,
+.home-name,
+.home-no-expand {
+    padding: 8px;
+    font-size: 1.4em;
+}
+
+.bed {
+    display: none;
+    position: absolute;
+    min-height: 36px;
+    padding: 0;
+}
+
+.bed-label {
+    display: none;
+}
+
+.bed-name {
+    font-size: 1.4em;
+}
+
+.bed-type {
+    float: left;
+}
+
+.bed-badge {
+    display: inline;
+    padding: 0 4px;
+    font-size: 87%;
+    font-weight: 700;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: .25em;
+
+}
+
+.long-stay .bed-badge {
+    background-color: #e0f2f1;
+    color:#004d40;
+  
+}
+
+.short-stay .bed-badge {
+    background-color: #00695c;
+    color: #e0f2f1;
+}
+
+tr.expand .bed-label{
+    display: block;
+    padding: 8px;
+}
+
+tr.expand .bed-label,
+.bed-container {
+    text-indent: 7px;
+}
+
+tr.expand .home {
+	font-weight: 500;
+}
+
+tr.expand .bed {
+    position: relative;
+    display: block;
+    margin-bottom: 1px;
+}
+
+.truncate {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.bookings-container {
+    position: relative;
+}
+
+.booking {
+    position: absolute;
+    text-align: center;
+    padding: 8px;
+    margin-bottom: 1px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow:ellipsis; 
+    height: 36px;
+    font-size: 1.4em;
+}
+
+td.row-heading .home:hover, .booking:hover, .bookings-container .bed:hover, .row-timeline {
+    cursor: pointer;
+}
+
+td.row-timeline {
+    vertical-align: inherit !important;
+}
+
+.bookings-container .bed .in-use:hover {
+    cursor: default;
+}
+
+.booking.booked {
+    background-color: #E53935;
+    color: white;
+}
+
+.booking.requested {
+    background-color: #FFB74D;    
+    color: #222;
+}
+
+.booking.in-use {
+    background-color: #424242;
+    color: white;
+}
+
+.hover {
+    background-color: #fbe9e7;
+    background-image: url(../images/timeline-hover.gif);
+}
+
+.nav-btn .btn {
+    box-shadow: none;
+    -webkit-transition: 0.1s ease-out;
+    -moz-transition: 0.1s ease-out;
+    -o-transition: 0.1s ease-out;
+    -ms-transition: 0.1s ease-out;
+    transition: 0.1s ease-out;
+}
+.btn-advance,
+.btn-back {
+    min-height: 24px;
+}
+
+.btn-advance, .btn-advance:active {
+    background: url("../images/ic_keyboard_arrow_right_white_24dp_2x.png") no-repeat center;
+    margin-right: 0;
+}
+.btn-advance:hover {
+    background-position: -8px center
+}
+.btn-advance:active {
+    background-position: -5px center
+}
+
+
+.btn-back, .btn-back:active {
+    background: url("../images/ic_keyboard_arrow_left_white_24dp_2x.png") no-repeat center;
+    margin-left: 0
+}
+.btn-back:hover {
+    background-position: -13px center
+}
+.btn-back:active {
+    background-position: -16px center
+}
+.centre {
+    text-align: center;
+
+}
+
+.vacancy {
+    display: inline-block;
+    width: 30px;
+    text-align: center;
+    min-height: 36px;
+    padding: 8px;
+    font-size: 1.4em;
+    color: #333;
+}
+.vacancy-none {
+    background-color: #424242;
+    color: white;
+}
+
+.vacancy:hover {
+	background-color: #eee;
+}
+
+.vacancy.vacancy-none:hover {
+	background-color:#424242;
+}
+
+.booking.requested:hover {
+	background-color: #ffa21a
+}
+
+.booking.booked:hover {
+	background-color: #cd1e1a;
+}
+
+
+
+
+/** kv **/
+/* month marker */
+.timeline-date.first {position: relative;}
+
+.timeline-date.first .month {
+    color: #fff;
+    font-size: 0.8em;
+    left: -1.3em;
+    line-height: 0.8em;
+    padding: 0.2em;
+    position: absolute;
+    top: -1.6em;
+}
+
+/* Timeline widget */
+
+.timeline>table {font-size: 0.7em;}
+.timeline-nav {
+    height: 58px;
+}
+.timeline-nav .wrapper h2 {
+    position: absolute;
+    display: inline-block;
+    padding:  0;
+    top: 12px;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    font-size: 1.25rem;
+     /*  padding: 0.2em 0em 3.5em 0em;*/
+
+}
+
+.timeline-nav .wrapper {
+    position: relative;
+    overflow: hidden;
+    padding: 8px 8px 18px;
+}
+
+
+.timeline-nav .btn-back{
+    float:left;
+    position: relative;
+    z-index: 100;
+    line-height: 0.5em;
+}
+
+.timeline-nav .btn-advance {
+   float:right; 
+   position: relative;
+   z-index: 100;
+   line-height: 0.5em;
+}
+
+.timeline-nav .btn-advance,.timeline-nav .btn-back {
+    margin: 0.2em 0;
+    padding: 5px 12px;
+}
+
+
+@media only screen and (min-device-width: 320px) {
+/* Styles */
+}
+
+@media only screen and (min-width: 768px) {
+    .home,
+    .home-name,
+    .bed-name,
+    .home-no-expand,
+    .vacancy,
+    .timeline-date,
+    .booking {
+        font-size: 1em;
+    }
+
+    .timeline>table {font-size: 1em;}
+    .timeline-nav {
+        height: 70px;
+    }
+    .timeline-nav .wrapper {
+         padding: 16px 16px 22px;
+         min-height: 30px;
+    }
+    .timeline-nav .wrapper h2 {
+        font-size: 1.6rem;
+        top:16px
+    }
+}
+
+@media only screen and (min-width: 992px) { 
+
+    .timeline-header-button {
+        text-align: right;
+    } 
+    .timeline-nav {
+        height: 80px;
+    }
+    .timeline-nav .wrapper {
+         padding: 20px 20px 28px;
+    }
+    .timeline-nav .wrapper h2 {
+        font-size: 1.9rem;
+        top:18px
+    }
+    /* Reduce ratio of column heading width */
+    td.row-heading {
+        width: 20%;
+    }
+    
+    th.row-timeline-heading, td.row-timeline {
+        width: 80%;
+    } 
+
+}
